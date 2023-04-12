@@ -41,9 +41,9 @@
             atX: 0,
             atY: 0,
             atZ: 0,
-            eyeX: 0,
-            eyeY: 0,
-            eyeZ: -50,
+            eyeX: -1,
+            eyeY: 80,
+            eyeZ: 0,
             upX: 0,
             upY: 1,
             upZ: 0
@@ -91,15 +91,22 @@
         ]
 
         var wingSize = {
-            h: 15,
+            h: 32,
+            w: 3,
+            l: 45,
+        }
+
+        var finSize = {
+            h: 22,
             w: 2,
-            l: 40,
+            l: 30,
         }
 
         var bodySize = {
-            h: 15,
-            w: 2,
-            l: 40,
+            h: 3.5,
+            w: 80,
+            l: 20,
+            d: 4
         }
 
         var jet = new THREE.Object3D();
@@ -123,12 +130,12 @@
             //1. Create your geometry object
             var wingGeom = new THREE.Geometry();
             //vertices
-            wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, -wingSize.l / 2)); //0x
-            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, 0, -wingSize.l / 2)); //1x
-            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, wingSize.h, -wingSize.l / 2)); //2x
-            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, 0, wingSize.l / 2)); //4x        
-            wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, +wingSize.l / 2)); //5x  
-            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, wingSize.h / 3, wingSize.l / 2)); //6x       
+            wingGeom.vertices.push(new THREE.Vector3(0, +wingSize.w / 2, -wingSize.l / 2)); //0x
+            wingGeom.vertices.push(new THREE.Vector3(0, -wingSize.w / 2, -wingSize.l / 2)); //1x
+            wingGeom.vertices.push(new THREE.Vector3(wingSize.h, -wingSize.w / 2, -wingSize.l / 2)); //2x
+            wingGeom.vertices.push(new THREE.Vector3(0, -wingSize.w / 2, wingSize.l / 2)); //4x        
+            wingGeom.vertices.push(new THREE.Vector3(0, +wingSize.w / 2, +wingSize.l / 2)); //5x  
+            wingGeom.vertices.push(new THREE.Vector3(wingSize.h / 3 * 1.2, -wingSize.w / 2, wingSize.l / 2)); //6x       
 
             //faces
             wingGeom.faces.push(new THREE.Face3(0, 4, 1)); //bottom 1
@@ -151,12 +158,13 @@
             //1. Create your geometry object
             var wingGeom = new THREE.Geometry();
             //vertices
-            wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, wingSize.l / 2)); //0x
-            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, 0, wingSize.l / 2)); //1x
-            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, wingSize.h, wingSize.l / 2)); //2x
-            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, 0, -wingSize.l / 2)); //4x        
-            wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, -wingSize.l / 2)); //5x  
-            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, wingSize.h / 3, -wingSize.l / 2)); //6x        
+            
+            wingGeom.vertices.push(new THREE.Vector3(0, +wingSize.w / 2, wingSize.l / 2)); //0x
+            wingGeom.vertices.push(new THREE.Vector3(0, -wingSize.w / 2, wingSize.l / 2)); //1x
+            wingGeom.vertices.push(new THREE.Vector3(wingSize.h, -wingSize.w / 2, wingSize.l / 2)); //2x
+            wingGeom.vertices.push(new THREE.Vector3(0, -wingSize.w / 2, -wingSize.l / 2)); //4x        
+            wingGeom.vertices.push(new THREE.Vector3(0, +wingSize.w / 2, -wingSize.l / 2)); //5x  
+            wingGeom.vertices.push(new THREE.Vector3(wingSize.h / 3 * 1.2, -wingSize.w / 2, -wingSize.l / 2)); //6x
 
             //faces
             wingGeom.faces.push(new THREE.Face3(0, 4, 1)); //bottom 1
@@ -174,33 +182,128 @@
             return wingGeom;
         }
 
+        function createtailfin() {
+            //HINT: (x, z) is your plane, y is your height
+            //1. Create your geometry object
+            var finGeom = new THREE.Geometry();
+            //vertices
+            
+            finGeom.vertices.push(new THREE.Vector3(0, +finSize.w / 2, finSize.l / 2)); //0x
+            finGeom.vertices.push(new THREE.Vector3(0, -finSize.w / 2, finSize.l / 2)); //1x
+            finGeom.vertices.push(new THREE.Vector3(finSize.h, 0, finSize.l / 2)); //2x
+            finGeom.vertices.push(new THREE.Vector3(0, -finSize.w / 2, -finSize.l / 2)); //4x        
+            finGeom.vertices.push(new THREE.Vector3(0, +finSize.w / 2, -finSize.l / 2)); //5x  
+            finGeom.vertices.push(new THREE.Vector3(finSize.h / 3 * 1.2, 0, -finSize.l / 2)); //6x
+
+            //faces
+            finGeom.faces.push(new THREE.Face3(0, 4, 1)); //bottom 1
+            finGeom.faces.push(new THREE.Face3(1, 4, 3)); //bottom 2
+            finGeom.faces.push(new THREE.Face3(0, 1, 2)); //back 1
+            finGeom.faces.push(new THREE.Face3(1, 3, 2)); //right 1
+            finGeom.faces.push(new THREE.Face3(5, 3, 2)); //right 2
+            finGeom.faces.push(new THREE.Face3(3, 5, 4)); //top 1
+            finGeom.faces.push(new THREE.Face3(0, 2, 5)); //left 1
+            finGeom.faces.push(new THREE.Face3(0, 4, 5)); //left 2
+
+            //2.5 Calculate normal vectors as necessary
+            finGeom.computeFaceNormals();
+
+            return finGeom;
+        }
+
         function createMainBody() {
             //HINT: (x, z) is your plane, y is your height
             //1. Create your geometry object
             var bodyGeom = new THREE.Geometry();
-            //vertices
-            bodyGeom.vertices.push(new THREE.Vector3(+bodySize.w / 2, 0, bodySize.l / 2)); //0x
-            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, 0, bodySize.l / 2)); //1x
-            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, bodySize.l / 2)); //2x
-            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, 0, -bodySize.l / 2)); //4x        
-            bodyGeom.vertices.push(new THREE.Vector3(+bodySize.w / 2, 0, -bodySize.l / 2)); //5x  
-            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h / 3, -bodySize.l / 2)); //6x        
+            //vertices on base
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 1.2)); //0x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5, 0, -bodySize.l)); //1x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5, 0, -bodySize.l / 1.1)); //2x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3, 0, -bodySize.l / 1.9)); //3x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2, 0, -bodySize.l / 4)); //4x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2, 0, bodySize.l / 4)); //5x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3, 0, bodySize.l / 1.9)); //6x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5, 0, bodySize.l / 1.1)); //7x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5, 0, bodySize.l)); //8x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 1.2)); //9x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 4)); //10x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, 0, bodySize.l / 4)); //11x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, 0, -bodySize.l / 4)); //12x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 4)); //13x
+            
+            //vertices on top
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 1.2 + bodySize.d)); //14x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, -bodySize.l + bodySize.d)); //15x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, -bodySize.l / 1.1 + bodySize.d)); //16x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, -bodySize.l / 1.9 + bodySize.d)); //17x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, -bodySize.l / 4 + bodySize.d)); //18x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, bodySize.l / 4 - bodySize.d)); //19x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, bodySize.l / 1.9 - bodySize.d)); //20x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, bodySize.l / 1.1 - bodySize.d)); //21x
+            bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, bodySize.l - bodySize.d)); //22x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 1.2 - bodySize.d)); //23x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 4)); //24x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, bodySize.l / 4)); //25x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, -bodySize.l / 4)); //26x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 4)); //27x
 
             //faces
-            bodyGeom.faces.push(new THREE.Face3(0, 4, 1)); //bottom 1
-            bodyGeom.faces.push(new THREE.Face3(1, 4, 3)); //bottom 2
-            bodyGeom.faces.push(new THREE.Face3(0, 1, 2)); //back 1
-            bodyGeom.faces.push(new THREE.Face3(1, 3, 2)); //right 1
-            bodyGeom.faces.push(new THREE.Face3(5, 3, 2)); //right 2
-            bodyGeom.faces.push(new THREE.Face3(3, 5, 4)); //top 1
-            bodyGeom.faces.push(new THREE.Face3(0, 2, 5)); //left 1
-            bodyGeom.faces.push(new THREE.Face3(0, 4, 5)); //left 2
+            bodyGeom.faces.push(new THREE.Face3(4, 5, 3));
+            bodyGeom.faces.push(new THREE.Face3(3, 5, 6));
+            bodyGeom.faces.push(new THREE.Face3(3, 6, 2));
+            bodyGeom.faces.push(new THREE.Face3(2, 6, 7));
+            bodyGeom.faces.push(new THREE.Face3(2, 7, 1));
+            bodyGeom.faces.push(new THREE.Face3(7, 1, 8));
+            bodyGeom.faces.push(new THREE.Face3(1, 8, 0));
+            bodyGeom.faces.push(new THREE.Face3(0, 8, 9));
+            bodyGeom.faces.push(new THREE.Face3(13, 10, 12));
+            bodyGeom.faces.push(new THREE.Face3(10, 12, 11));
+            bodyGeom.faces.push(new THREE.Face3(18, 19, 17));
+            bodyGeom.faces.push(new THREE.Face3(17, 19, 20));
+            bodyGeom.faces.push(new THREE.Face3(16, 17, 20));
+            bodyGeom.faces.push(new THREE.Face3(16, 20, 21));
+            bodyGeom.faces.push(new THREE.Face3(15, 16, 21));
+            bodyGeom.faces.push(new THREE.Face3(15, 21, 22));
+            bodyGeom.faces.push(new THREE.Face3(14, 15, 22));
+            bodyGeom.faces.push(new THREE.Face3(14, 22, 23));
+            bodyGeom.faces.push(new THREE.Face3(24, 25, 26));
+            bodyGeom.faces.push(new THREE.Face3(24, 26, 27));
+            bodyGeom.faces.push(new THREE.Face3(0, 14, 27));
+            bodyGeom.faces.push(new THREE.Face3(0, 27, 13));
+            bodyGeom.faces.push(new THREE.Face3(27, 13, 26));
+            bodyGeom.faces.push(new THREE.Face3(13, 26, 12));
+            bodyGeom.faces.push(new THREE.Face3(26, 12, 25));
+            bodyGeom.faces.push(new THREE.Face3(12, 25, 11));
+            bodyGeom.faces.push(new THREE.Face3(11, 25, 24));
+            bodyGeom.faces.push(new THREE.Face3(11, 24, 10));
+            bodyGeom.faces.push(new THREE.Face3(10, 24, 23));
+            bodyGeom.faces.push(new THREE.Face3(10, 23, 9));
+            bodyGeom.faces.push(new THREE.Face3(9, 23, 22));
+            bodyGeom.faces.push(new THREE.Face3(9, 22, 8));
+            bodyGeom.faces.push(new THREE.Face3(8, 22, 21));
+            bodyGeom.faces.push(new THREE.Face3(8, 21, 7));
+            bodyGeom.faces.push(new THREE.Face3(7, 21, 20));
+            bodyGeom.faces.push(new THREE.Face3(7, 20, 6));
+            bodyGeom.faces.push(new THREE.Face3(6, 20, 19));
+            bodyGeom.faces.push(new THREE.Face3(6, 19, 5));
+            bodyGeom.faces.push(new THREE.Face3(5, 19, 18));
+            bodyGeom.faces.push(new THREE.Face3(5, 18, 4));
+            bodyGeom.faces.push(new THREE.Face3(4, 18, 17));
+            bodyGeom.faces.push(new THREE.Face3(4, 17, 3));
+            bodyGeom.faces.push(new THREE.Face3(3, 17, 16));
+            bodyGeom.faces.push(new THREE.Face3(3, 16, 2));
+            bodyGeom.faces.push(new THREE.Face3(2, 16, 15));
+            bodyGeom.faces.push(new THREE.Face3(2, 15, 1));
+            bodyGeom.faces.push(new THREE.Face3(1, 15, 14));
+            bodyGeom.faces.push(new THREE.Face3(1, 14, 0));
 
             //2.5 Calculate normal vectors as necessary
             bodyGeom.computeFaceNormals();
 
             return bodyGeom;
         }
+
+
 
         function createJet() {
             //2. Create your geometry objects
@@ -209,7 +312,7 @@
             //3. Create a mesh for your geometry objects   
             let wingLMesh = TW.createMesh(wingLGeom, jetMeshMaterials[1]);
             jet.add(wingLMesh);
-            wingLMesh.position.z = 25
+            wingLMesh.position.set(-16,1,36)
 
             var wingRGeom = createWingR(); //wing body 
 
@@ -217,8 +320,14 @@
             let wingRMesh = TW.createMesh(wingRGeom, jetMeshMaterials[1]);
 
             jet.add(wingRMesh);
-            wingRMesh.position.z = -25
+            wingRMesh.position.set(-16,1,-35)
 
+            var bodyGeom = createMainBody(); //wing body 
+
+            //3. Create a mesh for your geometry objects   
+            let bodyMesh = TW.createMesh(bodyGeom, jetMeshMaterials[1]);
+
+            jet.add(bodyMesh)
             //4. Add the objects to the scene        
             scene.add(jet);
         }
