@@ -263,9 +263,19 @@ void main(){
         setupCameraControls();
 
         //add axishelper to scene -- created as a global variable
+        ah.position.y += 3
         scene.add(ah);
 
         render()
+
+
+        function onestep(){
+            water_box_mat.uniforms.time.value += oceanParams.time_increment;
+            render();
+        }
+
+        //create interval to call onestep every 100ms
+        var interval = setInterval(onestep, 1000/60);
 
 
         //need to add keypress callback because we ditched TW script!
