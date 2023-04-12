@@ -48,82 +48,7 @@
             upZ: 0
         };
 
-        var carPosition = {
-            x: 0,
-            y: 0,
-            z: 0,
-        }
 
-        var carSize = {
-            h: 15,
-            w: 20,
-            l: 40,
-        }
-
-        var wheelSize = { mult: 1 };
-
-        var wheelRotation = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
-
-        var bulbProps = {
-            x: 0,
-            y: 0,
-            z: 0,
-        }
-
-        var radiusTop = 5 * wheelSize.mult;
-        var radiusBottom = 5 * wheelSize.mult;
-        var height = 2 * wheelSize.mult;
-        var radialSegments = 16 * wheelSize.mult;
-
-        var carMeshMaterials = [
-            new THREE.MeshPhongMaterial({
-                color: new THREE.Color("black"),
-                specular: new THREE.Color("blue"),
-                shininess: 1,
-                flatShading: THREE.FlatShading,
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshPhongMaterial({
-                color: new THREE.Color("red"),
-                specular: new THREE.Color("white"),
-                shininess: 5,
-                flatShading: THREE.FlatShading,
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshPhongMaterial({
-                color: new THREE.Color(0x80807), //dark greyish
-                specular: new THREE.Color("white"),
-                shininess: 2,
-                flatShading: THREE.FlatShading,
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshPhongMaterial({
-                color: new THREE.Color(0x76552b), //dirt brown
-                specular: new THREE.Color("white"),
-                shininess: 10,
-                flatShading: THREE.FlatShading,
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshBasicMaterial({
-                color: 0x202020, //greyish
-                side: THREE.DoubleSide,
-            }),
-            new THREE.MeshBasicMaterial({
-                color: new THREE.Color(0xeedd82), //offwhite/yellowish
-            }),
-
-        ]
-
-        var car = new THREE.Object3D();
-        car.name = "carObject";
-
-        const speedFactor = 5.0;
-        var rotationDegree = 5;
-        const direction = new THREE.Vector3();
 
         // setupCamera() function creates and returns a camera with the desired parameters
         function setupCamera(cameraParameters) {
@@ -138,146 +63,6 @@
             return camera;
         }
 
-        function createCarBody() {
-            //HINT: (x, z) is your plane, y is your height
-            //1. Create your geometry object
-            var carGeom = new THREE.Geometry();
-            //vertices
-            carGeom.vertices.push(new THREE.Vector3(+carSize.w / 2, 0, -carSize.l / 2)); //0x
-            carGeom.vertices.push(new THREE.Vector3(-carSize.w / 2, 0, -carSize.l / 2)); //1x
-            carGeom.vertices.push(new THREE.Vector3(-carSize.w / 2, carSize.h, -carSize.l / 2)); //2x
-            carGeom.vertices.push(new THREE.Vector3(carSize.w / 2, carSize.h, -carSize.l / 2)); //3
-            carGeom.vertices.push(new THREE.Vector3(-carSize.w / 2, 0, carSize.l / 2)); //4x        
-            carGeom.vertices.push(new THREE.Vector3(+carSize.w / 2, 0, +carSize.l / 2)); //5x        
-
-            //faces
-            carGeom.faces.push(new THREE.Face3(0, 5, 1)); //bottom 1
-            carGeom.faces.push(new THREE.Face3(1, 5, 4)); //bottom 2
-            carGeom.faces.push(new THREE.Face3(0, 1, 2)); //back 1
-            carGeom.faces.push(new THREE.Face3(0, 2, 3)); //back 2
-            carGeom.faces.push(new THREE.Face3(3, 5, 0)); //left 1
-            carGeom.faces.push(new THREE.Face3(1, 4, 2)); //right 1
-            carGeom.faces.push(new THREE.Face3(3, 2, 5)); //top 1
-            carGeom.faces.push(new THREE.Face3(2, 4, 5)); //top 2
-
-            //2.5 Calculate normal vectors as necessary
-            carGeom.computeFaceNormals();
-
-            return carGeom;
-        }
-
-        function createCar() {
-            //2. Create your geometry objects
-            var carGeom = createCarBody(); //car body 
-
-            //wheel geometry
-            var wheels = new THREE.Object3D();
-            var wheelGeom = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);
-
-            //3. Create a mesh for your geometry objects   
-            let carMesh = new THREE.Mesh(carGeom, carMeshMaterials[1]);
-            let wheel1Mesh = new THREE.Mesh(wheelGeom, carMeshMaterials[0]);
-
-            //3.5 wheel rotation, need to rotate z axis to make wheel... wheel orientation!            
-            wheel1Mesh.rotation.set(0.01745 * wheelRotation.x, 0, Math.PI / 2);
-
-            //clone wheel1 for the other 3 wheels
-            wheel2Mesh = wheel1Mesh.clone();
-            wheel3Mesh = wheel1Mesh.clone();
-            wheel4Mesh = wheel1Mesh.clone();
-
-            //composite
-            wheels.add(wheel1Mesh);
-            wheels.add(wheel2Mesh);
-            wheels.add(wheel3Mesh);
-            wheels.add(wheel4Mesh);
-
-            // //4.5 set geometry positions
-            carMesh.position.set(carPosition.x, carPosition.y, carPosition.z); //x,y,z)
-
-            wheel1Mesh.position.set(carPosition.x - carSize.w / 2, carPosition.y, carPosition.z + (0.15 * carSize.l) - carSize.l / 2); //x,y,z
-            wheel2Mesh.position.set(carPosition.x - carSize.w / 2, carPosition.y, carPosition.z + (0.65 * carSize.l) - carSize.l / 2); //x,y,z
-            wheel3Mesh.position.set(carPosition.x + carSize.w / 2, carPosition.y, carPosition.z + (0.15 * carSize.l) - carSize.l / 2); //x,y,z
-            wheel4Mesh.position.set(carPosition.x + carSize.w / 2, carPosition.y, carPosition.z + (0.65 * carSize.l) - carSize.l / 2); //x,y,z
-
-            //create headlights
-            const headlights = createHeadlights();
-
-            car.add(headlights);
-            car.add(carMesh);
-            car.add(wheels);
-
-            //4. Add the objects to the scene        
-            scene.add(car);
-        }
-
-        function createHeadlights() {
-            //create headlights
-            var headlights = new THREE.Object3D();
-
-            let headlight1 = createHeadlight();
-            let headlight2 = createHeadlight();
-
-            headlight1.position.set(-carSize.w / 3.5, 2, carSize.l / 2.5);
-            headlight2.position.set(carSize.w / 3.5, 2, carSize.l / 2.5);
-
-            headlights.add(headlight1);
-            headlights.add(headlight2);
-
-            return headlights;
-        }
-
-        function createHeadlight() {
-
-            let headlight = new THREE.Object3D();
-
-            let radius = carSize.w / 7;
-            let height = 8.5;
-            let radialSegments = 4;
-            let heightSegments = 1;
-            let openEnded = true;
-
-            //light exterior
-            let headlightPart = new THREE.ConeGeometry(radius, height, radialSegments, heightSegments, openEnded);
-            const headlightPartMesh = new THREE.Mesh(headlightPart, carMeshMaterials[4]);
-            headlightPartMesh.rotation.set(THREE.Math.degToRad(-90), THREE.Math.degToRad(45), 0);
-
-            //create bulb
-            let bulbGeom = new THREE.ConeGeometry(radius * 0.6, height, radialSegments * 3, heightSegments, !openEnded);
-
-            let bulbMesh = new THREE.Mesh(bulbGeom, carMeshMaterials[5]);
-            bulbMesh.translateZ(-0.5);
-            bulbMesh.translateY(-0.1);
-            bulbMesh.rotateX(THREE.Math.degToRad(-90));
-            headlight.add(bulbMesh);
-            headlight.add(headlightPartMesh);
-
-            //TODO: Add spotlights for each of the bulbs.            
-            //consider using the two provided stub functions for light and target
-            //Note: headlamps should be targeting slightly different targets
-            //add light 1 and associated target   
-            let bulb = createLight(1)
-            let bulbTarget = createLightTarget(1)
-            bulb.target = bulbTarget
-            
-            headlight.add(bulb)
-            headlight.add(bulbTarget)
-            //add light 2 and associated target           
-
-            return headlight;
-        }
-
-        function createLight(pos) {
-            let light = new THREE.SpotLight(0xfae29c, 1, 0, 1, .45);
-            return light;
-        }
-
-        function createLightTarget(pos) {
-            let target = new THREE.Object3D();
-            target.position.set(0, 0, 100)
-            return target;
-        }
-
         function redoCamera() {
             scene.remove(camera);
             camera = setupCamera(cameraParams);
@@ -285,13 +70,6 @@
             render();
         }
 
-        function redoLight() {
-            scene.remove(car);
-            scene.remove(bulbLight);
-            scene.remove(bulbTarget);
-            createCar();
-            render();
-        }
 
         function render() {
             // a render function; assume global variables scene, renderer, and camera
@@ -313,34 +91,16 @@
     <h1>More WedgeCar™</h1>
 
     <script>
+
+        var state = {}
         //1.  Create an initial empty Scene
         var scene = new THREE.Scene();
 
-        //2. Create car using global object variable
-        createCar();
-
-        //TODO: Light up the scene!        
-
-        // add a wall to the scene
-        var wall = new THREE.Mesh(new THREE.PlaneGeometry(200, 140), carMeshMaterials[2]);
-        wall.translateY(65);
-        wall.translateZ(50);
-        scene.add(wall);
-
-        // add a ground to the scene
-        var ground = new THREE.Mesh(new THREE.PlaneGeometry(150, 200), carMeshMaterials[3]);
-        ground.translateZ(-49)
-        ground.translateY(-radiusTop + 0.02);
-        ground.rotateX(THREE.Math.degToRad(90));
-        scene.add(ground);
 
         //5. Create a renderer to render the scene
         var renderer = new THREE.WebGLRenderer();
 
-        //6. REPLACING TW.mainInit(), we don't need it anymore! 
-        // adds the canvas to the document,
-        // enables display of 3D coordinate axes, sets up camera controls
-        // TW.mainInit(renderer, scene); //Not needed with the following changes
+
         var canvas = renderer.domElement;
         //note state has been created as a global so we can modify it later if we desire
         state.renderer = renderer;  // save this so that others can use it.
@@ -360,39 +120,15 @@
         //add axishelper to scene -- created as a global variable
         scene.add(ah);
 
-        var ambLight = new THREE.AmbientLight(new THREE.Color("white"), .5);
-        scene.add(ambLight);
+        render()
 
-        render();
 
         //need to add keypress callback because we ditched TW script!
         document.addEventListener("keypress", (event) => {
             const key = event.key;
             console.log("Key pressed: " + key);
-            switch (key) {
-                case "1":
-                    //TODO: fix camera for scene 1 view
-                    cameraParams.eyeY = 35
-                    cameraParams.eyeX = 35
-                    cameraParams.eyeZ = -50
-                    cameraParams.fov = 90
-
-                    redoCamera();
-                    break;
-                case "2":
-                    //TODO: fix camera for scene 2 view
-                    cameraParams.eyeY = 5
-                    cameraParams.eyeX = 30
-                    cameraParams.eyeZ = 40
-                    cameraParams.fov = 75
-                    
-
-                    redoCamera();
-                    break;
-
-                default:
-                    break;
-            }
+    
+            
             setupCameraControls(); //probably a better way to fix this...
         });
     </script>
