@@ -92,9 +92,154 @@
 
     <script>
 
+const _VS =
+
+`
+
+float rand(vec2 co){
+  return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
+uniform float time;
+varying vec3 worldPosition;
+
+void main() {
+
+
+  const float pi = 3.1415926535897932384626433832795;
+  vec3 position = position;
+  float time = time;
+  float offset = rand(position.xy);
+
+
+
+  position.z += (sin(0.25 * pi * position.x + time + offset) + sin(0.33 * pi * position.y + time + offset) + sin(0.5 * pi * position.x + time + offset) )* 0.4 + offset * 0.2;
+  worldPosition = position;
+
+
+
+  vec3 scale = vec3(1, 1, 1);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position*scale, 1.0);
+
+}`
+
+
+
+const _FS = 
+`
+varying vec3 worldPosition;
+uniform float time;
+uniform float red_power;
+uniform float green_power;
+uniform float blue_power;
+uniform float red_offset;
+uniform float green_offset;
+uniform float blue_offset;
+uniform float max_blue;
+uniform float max_green;
+uniform float max_red;
+uniform float min_blue;
+uniform float min_green;
+uniform float min_red;
+uniform float height_offset;
+void main(){
+
+  // scale z to be between 0 and 1
+  float scaledZ = (worldPosition.z + 5.0) / 10.0;
+  scaledZ = scaledZ + height_offset;
+
+  //set rgb to be blue at middle and white at top
+  float red = red_offset - pow(scaledZ, red_power);
+  float green = green_offset - pow(scaledZ, green_power);
+  float blue = blue_offset - pow(scaledZ, blue_power);
+
+  if (blue < min_blue) {
+    blue = min_blue;
+  }else if (blue > max_blue) {
+    blue = max_blue;
+  }
+  if (green < min_green) {
+    green = min_green;
+  }else if (green > max_green) {
+    green = max_green;
+  }
+  if (red < min_red) {
+    red = min_red;
+  }else if (red > max_red) {
+    red = max_red;
+  }
+
+
+
+
+
+  gl_FragColor = vec4(red, green, blue, 1.0);
+
+
+}`
+
+        var oceanParams = {
+            time_increment: 0.05,
+            red_power: 1.5,
+            green_power: 2.4,
+            blue_power: 0.6,
+            red_offset: 0.6,
+            green_offset: 0.6,
+            blue_offset: 1.3,
+            max_blue: 1.0,
+            max_green: 1.0,
+            max_red: 1.0,
+            min_blue: 0.0,
+            min_green: 0.0,
+            min_red: 0.0,
+            height_offset: 0.33
+
+        };
+
         var state = {}
         //1.  Create an initial empty Scene
         var scene = new THREE.Scene();
+
+
+
+        var water_box_geom = new THREE.BoxGeometry(400, 400, 1, 800,800,1);
+
+        var water_box_mat = new THREE.ShaderMaterial({
+        uniforms: {
+            time: { value: 0.0 },
+            color: { value: new THREE.Color(0x0000ff),
+            },
+            red_power: { value: oceanParams.red_power },
+            green_power: { value: oceanParams.green_power },
+            blue_power: { value: oceanParams.blue_power},
+            red_offset: { value: oceanParams.red_offset },
+            green_offset: { value: oceanParams.green_offset },
+            blue_offset: { value: oceanParams.blue_offset },
+            max_blue: { value: oceanParams.max_blue },
+            max_green: { value: oceanParams.max_green },
+            max_red: { value: oceanParams.max_red },
+            min_blue: { value: oceanParams.min_blue },
+            min_green: { value: oceanParams.min_green },
+            min_red: { value: oceanParams.min_red },
+            height_offset: { value: oceanParams.height_offset }
+        },
+        vertexShader: _VS,
+        fragmentShader: _FS,
+        side: THREE.DoubleSide,
+        wireframe: false
+        });
+        water_box_mat.uniforms.time.value = 0.0;
+
+
+        var water_box = new THREE.Mesh(water_box_geom, water_box_mat);
+        water_box.position.set(0, 0, 0);
+        water_box.rotation.x = Math.PI / 2;
+        scene.add(water_box);
+
+        var water_box_2 = new THREE.Mesh(water_box_geom, water_box_mat);
+        water_box_2.rotation.x = Math.PI / 2;
+        water_box_2.rotation.z = Math.PI / 4;
+        scene.add(water_box_2);
+
 
 
         //5. Create a renderer to render the scene
