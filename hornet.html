@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Quiz 5</title>
+
+    <style>
+        /* feel free to change the canvas style. If you want to use the entire
+      window, set width: 100% and height: 100% */
+        canvas {
+            display: block;
+            margin: 10px auto;
+            width: 700px;
+            height: 500px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+
+    <script src="./js/three.js"> </script>
+    <script src="./js/SceneUtils.js"></script>
+    <script src="./js/OrbitControls.js"></script>
+    <script src="./js/dat.gui.js"></script>
+
+
+    <script>
+        //0. create any global variables used in your scene               
+
+        var state = {};
+        var ah = new THREE.AxesHelper(50);
+
+        var cameraParams = {
+            near: 1,
+            far: 250,
+            fov: 75,                // degrees
+            aspectRatio: 700 / 500,   // from dimensions of the canvas, see CSS
+            atX: 0,
+            atY: 0,
+            atZ: 0,
+            eyeX: 0,
+            eyeY: 0,
+            eyeZ: -50,
+            upX: 0,
+            upY: 1,
+            upZ: 0
+        };
+
+        
+
+        var jetMeshMaterials = [
+            new THREE.MeshPhongMaterial({
+                color: new THREE.Color("black"),
+                specular: new THREE.Color("blue"),
+                shininess: 1,
+                flatShading: THREE.FlatShading,
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshPhongMaterial({
+                color: new THREE.Color("red"),
+                specular: new THREE.Color("white"),
+                shininess: 5,
+                flatShading: THREE.FlatShading,
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshPhongMaterial({
+                color: new THREE.Color(0x80807), //dark greyish
+                specular: new THREE.Color("white"),
+                shininess: 2,
+                flatShading: THREE.FlatShading,
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshPhongMaterial({
+                color: new THREE.Color(0x76552b), //dirt brown
+                specular: new THREE.Color("white"),
+                shininess: 10,
+                flatShading: THREE.FlatShading,
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                color: 0x202020, //greyish
+                side: THREE.DoubleSide,
+            }),
+            new THREE.MeshBasicMaterial({
+                color: new THREE.Color(0xeedd82), //offwhite/yellowish
+            }),
+
+        ]
+
+        var jetSize = {
+            h: 15,
+            w: 20,
+            l: 40,
+        }
+
+        var jet = new THREE.Object3D();
+        jet.name = "jetObject";
+
+        // setupCamera() function creates and returns a camera with the desired parameters
+        function setupCamera(cameraParameters) {
+            // set up an abbreviation 
+            var cp = cameraParameters;
+            // create an initial camera with the desired shape
+            var camera = new THREE.PerspectiveCamera(cp.fov, cp.aspectRatio, cp.near, cp.far);
+            // set the camera location and orientation
+            camera.position.set(cp.eyeX, cp.eyeY, cp.eyeZ);
+            camera.up.set(cp.upX, cp.upY, cp.upZ);
+            camera.lookAt(new THREE.Vector3(cp.atX, cp.atY, cp.atZ));
+            return camera;
+        }
+
+        function createWing() {
+            //HINT: (x, z) is your plane, y is your height
+            //1. Create your geometry object
+            var wingGeom = new THREE.Geometry();
+            //vertices
+            wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, -wingSize.l / 2)); //0x
+            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, 0, -wingSize.l / 2)); //1x
+            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, wingSize.h, -wingSize.l / 2)); //2x
+            wingGeom.vertices.push(new THREE.Vector3(wingSize.w / 2, wingSize.h, -wingSize.l / 2)); //3
+            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, 0, wingSize.l / 2)); //4x        
+            wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, +wingSize.l / 2)); //5x        
+
+            //faces
+            wingGeom.faces.push(new THREE.Face3(0, 5, 1)); //bottom 1
+            wingGeom.faces.push(new THREE.Face3(1, 5, 4)); //bottom 2
+            wingGeom.faces.push(new THREE.Face3(0, 1, 2)); //back 1
+            wingGeom.faces.push(new THREE.Face3(0, 2, 3)); //back 2
+            wingGeom.faces.push(new THREE.Face3(3, 5, 0)); //left 1
+            wingGeom.faces.push(new THREE.Face3(1, 4, 2)); //right 1
+            wingGeom.faces.push(new THREE.Face3(3, 2, 5)); //top 1
+            wingGeom.faces.push(new THREE.Face3(2, 4, 5)); //top 2
+
+            //2.5 Calculate normal vectors as necessary
+            wingGeom.computeFaceNormals();
+
+            return wingGeom;
+        }
+
+        function createJet() {
+            //2. Create your geometry objects
+            var wingGeom = createWing(); //wing body 
+
+            //3. Create a mesh for your geometry objects   
+            let wingMesh = new THREE.Mesh(wingGeom, jetMeshMaterials[1]);
+
+            jet.add(wingMesh);
+
+            //4. Add the objects to the scene        
+            scene.add(jet);
+        }
+
+        function redoCamera() {
+            scene.remove(camera);
+            camera = setupCamera(cameraParams);
+            scene.add(camera)
+            render();
+        }
+
+        function render() {
+            // a render function; assume global variables scene, renderer, and camera
+            renderer.render(scene, camera);
+        }
+
+        function setupCameraControls() {
+            var cameraControls = new THREE.OrbitControls(camera, canvas);
+            state.cameraControls = cameraControls;
+            cameraControls.addEventListener('change', render);
+            cameraControls.update();
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <h1>More Wedgejet™</h1>
+
+    <script>
+        //1.  Create an initial empty Scene
+        var scene = new THREE.Scene();
+
+        //2. Create jet using global object variable
+        createJet();
+
+        //5. Create a renderer to render the scene
+        var renderer = new THREE.WebGLRenderer();
+
+        //6. REPLACING TW.mainInit(), we don't need it anymore! 
+        // adds the canvas to the document,
+        // enables display of 3D coordinate axes, sets up camera controls
+        // TW.mainInit(renderer, scene); //Not needed with the following changes
+        var canvas = renderer.domElement;
+        //note state has been created as a global so we can modify it later if we desire
+        state.renderer = renderer;  // save this so that others can use it.
+        state.scene = scene;        // save this so that others can use it.
+        var parent = document.body;
+        parent.appendChild(canvas);
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        renderer.setClearColor(new THREE.Color(0x2f2f2f), 1); //darker greyish... it's evening!
+
+        //7. Set up a camera for the scene
+        var camera = setupCamera(cameraParams);
+        scene.add(camera);
+
+        //set up camera controls so we can use mouse to pan around scene
+        setupCameraControls();
+
+        var ambLight = new THREE.AmbientLight(new THREE.Color("white"), .5);
+        scene.add(ambLight);
+
+        render();
+
+    </script>
+
+
+</body>
+
+</html>
