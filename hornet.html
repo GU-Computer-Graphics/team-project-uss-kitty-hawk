@@ -24,6 +24,7 @@
     <script src="./js/SceneUtils.js"></script>
     <script src="./js/OrbitControls.js"></script>
     <script src="./js/dat.gui.js"></script>
+    <script src="./js/tw-sp21.js"></script>
 
 
     <script>
@@ -89,9 +90,15 @@
 
         ]
 
-        var jetSize = {
+        var wingSize = {
             h: 15,
-            w: 20,
+            w: 2,
+            l: 40,
+        }
+
+        var bodySize = {
+            h: 15,
+            w: 2,
             l: 40,
         }
 
@@ -111,7 +118,7 @@
             return camera;
         }
 
-        function createWing() {
+        function createWingL() {
             //HINT: (x, z) is your plane, y is your height
             //1. Create your geometry object
             var wingGeom = new THREE.Geometry();
@@ -119,19 +126,19 @@
             wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, -wingSize.l / 2)); //0x
             wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, 0, -wingSize.l / 2)); //1x
             wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, wingSize.h, -wingSize.l / 2)); //2x
-            wingGeom.vertices.push(new THREE.Vector3(wingSize.w / 2, wingSize.h, -wingSize.l / 2)); //3
             wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, 0, wingSize.l / 2)); //4x        
-            wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, +wingSize.l / 2)); //5x        
+            wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, +wingSize.l / 2)); //5x  
+            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, wingSize.h / 3, wingSize.l / 2)); //6x       
 
             //faces
-            wingGeom.faces.push(new THREE.Face3(0, 5, 1)); //bottom 1
-            wingGeom.faces.push(new THREE.Face3(1, 5, 4)); //bottom 2
+            wingGeom.faces.push(new THREE.Face3(0, 4, 1)); //bottom 1
+            wingGeom.faces.push(new THREE.Face3(1, 4, 3)); //bottom 2
             wingGeom.faces.push(new THREE.Face3(0, 1, 2)); //back 1
-            wingGeom.faces.push(new THREE.Face3(0, 2, 3)); //back 2
-            wingGeom.faces.push(new THREE.Face3(3, 5, 0)); //left 1
-            wingGeom.faces.push(new THREE.Face3(1, 4, 2)); //right 1
-            wingGeom.faces.push(new THREE.Face3(3, 2, 5)); //top 1
-            wingGeom.faces.push(new THREE.Face3(2, 4, 5)); //top 2
+            wingGeom.faces.push(new THREE.Face3(1, 3, 2)); //right 1
+            wingGeom.faces.push(new THREE.Face3(5, 3, 2)); //right 2
+            wingGeom.faces.push(new THREE.Face3(3, 5, 4)); //top 1
+            wingGeom.faces.push(new THREE.Face3(0, 2, 5)); //left 1
+            wingGeom.faces.push(new THREE.Face3(0, 4, 5)); //left 2
 
             //2.5 Calculate normal vectors as necessary
             wingGeom.computeFaceNormals();
@@ -139,14 +146,78 @@
             return wingGeom;
         }
 
+        function createWingR() {
+            //HINT: (x, z) is your plane, y is your height
+            //1. Create your geometry object
+            var wingGeom = new THREE.Geometry();
+            //vertices
+            wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, wingSize.l / 2)); //0x
+            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, 0, wingSize.l / 2)); //1x
+            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, wingSize.h, wingSize.l / 2)); //2x
+            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, 0, -wingSize.l / 2)); //4x        
+            wingGeom.vertices.push(new THREE.Vector3(+wingSize.w / 2, 0, -wingSize.l / 2)); //5x  
+            wingGeom.vertices.push(new THREE.Vector3(-wingSize.w / 2, wingSize.h / 3, -wingSize.l / 2)); //6x        
+
+            //faces
+            wingGeom.faces.push(new THREE.Face3(0, 4, 1)); //bottom 1
+            wingGeom.faces.push(new THREE.Face3(1, 4, 3)); //bottom 2
+            wingGeom.faces.push(new THREE.Face3(0, 1, 2)); //back 1
+            wingGeom.faces.push(new THREE.Face3(1, 3, 2)); //right 1
+            wingGeom.faces.push(new THREE.Face3(5, 3, 2)); //right 2
+            wingGeom.faces.push(new THREE.Face3(3, 5, 4)); //top 1
+            wingGeom.faces.push(new THREE.Face3(0, 2, 5)); //left 1
+            wingGeom.faces.push(new THREE.Face3(0, 4, 5)); //left 2
+
+            //2.5 Calculate normal vectors as necessary
+            wingGeom.computeFaceNormals();
+
+            return wingGeom;
+        }
+
+        function createMainBody() {
+            //HINT: (x, z) is your plane, y is your height
+            //1. Create your geometry object
+            var bodyGeom = new THREE.Geometry();
+            //vertices
+            bodyGeom.vertices.push(new THREE.Vector3(+bodySize.w / 2, 0, bodySize.l / 2)); //0x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, 0, bodySize.l / 2)); //1x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, bodySize.l / 2)); //2x
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, 0, -bodySize.l / 2)); //4x        
+            bodyGeom.vertices.push(new THREE.Vector3(+bodySize.w / 2, 0, -bodySize.l / 2)); //5x  
+            bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h / 3, -bodySize.l / 2)); //6x        
+
+            //faces
+            bodyGeom.faces.push(new THREE.Face3(0, 4, 1)); //bottom 1
+            bodyGeom.faces.push(new THREE.Face3(1, 4, 3)); //bottom 2
+            bodyGeom.faces.push(new THREE.Face3(0, 1, 2)); //back 1
+            bodyGeom.faces.push(new THREE.Face3(1, 3, 2)); //right 1
+            bodyGeom.faces.push(new THREE.Face3(5, 3, 2)); //right 2
+            bodyGeom.faces.push(new THREE.Face3(3, 5, 4)); //top 1
+            bodyGeom.faces.push(new THREE.Face3(0, 2, 5)); //left 1
+            bodyGeom.faces.push(new THREE.Face3(0, 4, 5)); //left 2
+
+            //2.5 Calculate normal vectors as necessary
+            bodyGeom.computeFaceNormals();
+
+            return bodyGeom;
+        }
+
         function createJet() {
             //2. Create your geometry objects
-            var wingGeom = createWing(); //wing body 
+            var wingLGeom = createWingL(); //wing body 
 
             //3. Create a mesh for your geometry objects   
-            let wingMesh = new THREE.Mesh(wingGeom, jetMeshMaterials[1]);
+            let wingLMesh = TW.createMesh(wingLGeom, jetMeshMaterials[1]);
+            jet.add(wingLMesh);
+            wingLMesh.position.z = 25
 
-            jet.add(wingMesh);
+            var wingRGeom = createWingR(); //wing body 
+
+            //3. Create a mesh for your geometry objects   
+            let wingRMesh = TW.createMesh(wingRGeom, jetMeshMaterials[1]);
+
+            jet.add(wingRMesh);
+            wingRMesh.position.z = -25
 
             //4. Add the objects to the scene        
             scene.add(jet);
@@ -210,6 +281,8 @@
 
         var ambLight = new THREE.AmbientLight(new THREE.Color("white"), .5);
         scene.add(ambLight);
+
+        scene.add(ah);
 
         render();
 
