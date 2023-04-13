@@ -24,7 +24,6 @@
     <script src="./js/SceneUtils.js"></script>
     <script src="./js/OrbitControls.js"></script>
     <script src="./js/dat.gui.js"></script>
-    <script src="./js/tw-sp21.js"></script>
     <script src="./js/jet.js"></script>
 
 
@@ -42,9 +41,9 @@
             atX: 0,
             atY: 0,
             atZ: 0,
-            eyeX: -1,
-            eyeY: 80,
-            eyeZ: 0,
+            eyeX: 0,
+            eyeY: 0,
+            eyeZ: 100,
             upX: 0,
             upY: 1,
             upZ: 0
@@ -106,7 +105,8 @@
         scene.add(jet1)
         scene.add(jet2)
 
-        jet1.position.set(0,60,0)
+        jet1.position.set(0,40,0)
+        jet1.scale.set(.5,.5,.5)
         jet1.rotateX(THREE.Math.degToRad(180))
         jet2.position.set(0,0,0)
 
