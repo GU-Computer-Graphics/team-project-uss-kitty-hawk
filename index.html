@@ -24,6 +24,7 @@
     <script src="./js/SceneUtils.js"></script>
     <script src="./js/OrbitControls.js"></script>
     <script src="./js/dat.gui.js"></script>
+    <script src="./js/jet.js"></script>
 
 
     <script>
@@ -239,6 +240,16 @@ void main(){
         water_box_2.rotation.x = Math.PI / 2;
         water_box_2.rotation.z = Math.PI / 4;
         scene.add(water_box_2);
+
+
+        let jet1 = createJet();
+        jet1.position.set(0, 10, 0);
+        jet1.scale.set(0.2, 0.2, 0.2);
+        scene.add(jet1);
+
+
+        let bright_ambient = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(bright_ambient);
 
 
 
