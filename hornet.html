@@ -57,32 +57,37 @@
                 specular: new THREE.Color("blue"),
                 shininess: 1,
                 flatShading: THREE.FlatShading,
-                side: THREE.DoubleSide
+                side: THREE.DoubleSide,
             }),
             new THREE.MeshPhongMaterial({
-                color: new THREE.Color("red"),
+                color: new THREE.Color(0xe2eaec),
                 specular: new THREE.Color("white"),
                 shininess: 5,
                 flatShading: THREE.FlatShading,
                 side: THREE.DoubleSide
             }),
             new THREE.MeshPhongMaterial({
-                color: new THREE.Color(0x80807), //dark greyish
+                color: new THREE.Color(0xe2eaec), //dark greyish
                 specular: new THREE.Color("white"),
                 shininess: 2,
                 flatShading: THREE.FlatShading,
-                side: THREE.DoubleSide
+                side: THREE.DoubleSide,
+                wireframe: true
             }),
             new THREE.MeshPhongMaterial({
-                color: new THREE.Color(0x76552b), //dirt brown
+                color: new THREE.Color("black"), //dirt brown
+                specular: new THREE.Color("white"),
+                shininess: 10,
+                flatShading: THREE.FlatShading,
+                side: THREE.DoubleSide,
+                wireframe: true
+            }),
+            new THREE.MeshPhongMaterial({
+                color: new THREE.Color(0xe2eaec), //dirt brown
                 specular: new THREE.Color("white"),
                 shininess: 10,
                 flatShading: THREE.FlatShading,
                 side: THREE.DoubleSide
-            }),
-            new THREE.MeshBasicMaterial({
-                color: 0x202020, //greyish
-                side: THREE.DoubleSide,
             }),
             new THREE.MeshBasicMaterial({
                 color: new THREE.Color(0xeedd82), //offwhite/yellowish
@@ -94,6 +99,12 @@
             h: 32,
             w: 3,
             l: 45,
+        }
+
+        var intakeSize = {
+            h: 10,
+            w: 10,
+            l: 10,
         }
 
         var finSize = {
@@ -211,6 +222,128 @@
             return finGeom;
         }
 
+        function createIntake() {
+            var intakeGeom = new THREE.Geometry();
+            //vertices
+            
+            intakeGeom.vertices.push(new THREE.Vector3(+intakeSize.w / 2, 0, -intakeSize.l / 2)); //0x
+            intakeGeom.vertices.push(new THREE.Vector3(-intakeSize.w / 2, 0, -intakeSize.l / 2)); //1x
+            intakeGeom.vertices.push(new THREE.Vector3(-intakeSize.w / 2, intakeSize.h, -intakeSize.l / 2)); //2x
+            intakeGeom.vertices.push(new THREE.Vector3(intakeSize.w / 2, intakeSize.h, -intakeSize.l / 2)); //3
+            intakeGeom.vertices.push(new THREE.Vector3(-intakeSize.w / 2, 0, intakeSize.l / 2)); //4x        
+            intakeGeom.vertices.push(new THREE.Vector3(+intakeSize.w / 2, 0, +intakeSize.l / 2)); //5x        
+
+            //faces
+            intakeGeom.faces.push(new THREE.Face3(0, 5, 1)); //bottom 1
+            intakeGeom.faces.push(new THREE.Face3(1, 5, 4)); //bottom 2
+            intakeGeom.faces.push(new THREE.Face3(0, 1, 2)); //back 1
+            intakeGeom.faces.push(new THREE.Face3(0, 2, 3)); //back 2
+            intakeGeom.faces.push(new THREE.Face3(3, 5, 0)); //left 1
+            intakeGeom.faces.push(new THREE.Face3(1, 4, 2)); //right 1
+            intakeGeom.faces.push(new THREE.Face3(3, 2, 5)); //top 1
+            intakeGeom.faces.push(new THREE.Face3(2, 4, 5)); //top 2
+
+            //2.5 Calculate normal vectors as necessary
+            intakeGeom.computeFaceNormals();
+
+
+            return intakeGeom
+        }
+
+        function createtailThruster(i) {
+            //HINT: (x, z) is your plane, y is your height
+            //1. Create your geometry object
+            var Thruster = new THREE.Object3D();
+            var backGeom = new THREE.CylinderGeometry(6, 4, 30, 20);
+            var backMesh = new THREE.Mesh(backGeom, jetMeshMaterials[i]);
+
+            var frontGeom = new THREE.BoxGeometry(10,30, 10)
+            var frontMesh = new THREE.Mesh(frontGeom, jetMeshMaterials[i])
+
+            let radius =  5;
+            let height = 10;
+            let radialSegments = 4;
+            let heightSegments = 10;
+            let openEnded = true;
+
+            //light exterior
+            let intakeGeom = createIntake();
+            const intakeMesh = new THREE.Mesh(intakeGeom, jetMeshMaterials[i])
+
+            Thruster.add(backMesh)
+            Thruster.add(frontMesh)
+            Thruster.add(intakeMesh)
+            frontMesh.position.set(27,-4,0)
+            intakeMesh.position.set(47,1,0)
+
+            backMesh.rotateZ(THREE.Math.degToRad(-105));
+            frontMesh.rotateZ(THREE.Math.degToRad(90))
+            intakeMesh.rotation.set(THREE.Math.degToRad(180), THREE.Math.degToRad(90), 0);
+            return Thruster;
+        }
+
+        function createNose(i) {
+            //HINT: (x, z) is your plane, y is your height
+            //1. Create your geometry object
+            var NoseColomn = new THREE.Object3D();
+            var shaftGeom = new THREE.CylinderGeometry(5, 5, 70, 20);
+            var shaftMesh = new THREE.Mesh(shaftGeom, jetMeshMaterials[i]);
+
+            var curve = new THREE.EllipseCurve(
+                0,  0,            // ax, aY
+                7, 37,           // xRadius, yRadius
+                0,  2 * Math.PI,  // aStartAngle, aEndAngle
+                false,            // aClockwise
+                0                 // aRotation
+            );
+
+            var points = curve.getPoints( 50 );
+            var cockpitGeom = new THREE.LatheGeometry( points );
+            var cockpitMesh = new THREE.Mesh(cockpitGeom, jetMeshMaterials[i]);
+
+            curve = new THREE.EllipseCurve(
+                0,  0,            // ax, aY
+                5, 38,           // xRadius, yRadius
+                0,  2 * Math.PI,  // aStartAngle, aEndAngle
+                false,            // aClockwise
+                0                 // aRotation
+            );
+
+            points = curve.getPoints( 50 );
+            var noseGeom = new THREE.LatheGeometry( points );
+            var noseMesh = new THREE.Mesh(noseGeom, jetMeshMaterials[i]);
+
+            curve = new THREE.EllipseCurve(
+                4,  0,            // ax, aY
+                6, 5,           // xRadius, yRadius
+                0,  2 * Math.PI,  // aStartAngle, aEndAngle
+                false,            // aClockwise
+                0                 // aRotation
+            );
+
+            points = curve.getPoints( 50 );
+            var glassGeom = new THREE.LatheGeometry( points );
+            var glassMesh = new THREE.Mesh(glassGeom, jetMeshMaterials[0]);
+
+
+            NoseColomn.add(shaftMesh)
+            NoseColomn.add(cockpitMesh)
+            NoseColomn.add(noseMesh)
+            NoseColomn.add(glassMesh)
+
+            shaftMesh.position.set(20,-2,0)
+            cockpitMesh.position.set(20,1,0)
+            noseMesh.position.set(44,-2,0)
+            glassMesh.position.set(33,3.5,0)
+
+
+            shaftMesh.rotateZ(THREE.Math.degToRad(-90));
+            cockpitMesh.rotateZ(THREE.Math.degToRad(-90));
+            noseMesh.rotateZ(THREE.Math.degToRad(-90));
+            glassMesh.rotateX(THREE.Math.degToRad(-90));
+            return NoseColomn;
+        }
+
         function createMainBody() {
             //HINT: (x, z) is your plane, y is your height
             //1. Create your geometry object
@@ -305,27 +438,79 @@
 
 
 
-        function createJet() {
+        function createJet(i) {
             //2. Create your geometry objects
             var wingLGeom = createWingL(); //wing body 
 
             //3. Create a mesh for your geometry objects   
-            let wingLMesh = TW.createMesh(wingLGeom, jetMeshMaterials[1]);
+            let wingLMesh = new THREE.Mesh(wingLGeom, jetMeshMaterials[i]);
             jet.add(wingLMesh);
             wingLMesh.position.set(-16,1,36)
 
             var wingRGeom = createWingR(); //wing body 
 
             //3. Create a mesh for your geometry objects   
-            let wingRMesh = TW.createMesh(wingRGeom, jetMeshMaterials[1]);
+            let wingRMesh = new THREE.Mesh(wingRGeom, jetMeshMaterials[i]);
 
             jet.add(wingRMesh);
             wingRMesh.position.set(-16,1,-35)
 
+            var TailBRGeom = createtailfin(); //wing body 
+
+            //3. Create a mesh for your geometry objects   
+            let TailBRMesh = new THREE.Mesh(TailBRGeom, jetMeshMaterials[i]);
+
+            jet.add(TailBRMesh);
+            TailBRMesh.position.set(-50,4,-23)
+            TailBRMesh.rotateY(THREE.Math.degToRad(10));
+
+            var TailBLGeom = createtailfin(); //wing body 
+
+            //3. Create a mesh for your geometry objects   
+            let TailBLMesh = new THREE.Mesh(TailBLGeom, jetMeshMaterials[i]);
+
+            jet.add(TailBLMesh);
+            TailBLMesh.position.set(-50,4,23)
+            TailBLMesh.rotateX(THREE.Math.degToRad(180));
+            TailBLMesh.rotateY(THREE.Math.degToRad(10));
+
+            var TailTRGeom = createtailfin(); //wing body 
+
+            //3. Create a mesh for your geometry objects   
+            let TailTRMesh = new THREE.Mesh(TailTRGeom, jetMeshMaterials[i]);
+
+            jet.add(TailTRMesh);
+            TailTRMesh.position.set(-40,15,-12)
+            TailTRMesh.rotateX(THREE.Math.degToRad(75));
+
+            var TailTLGeom = createtailfin(); //wing body 
+
+            //3. Create a mesh for your geometry objects   
+            let TailTLMesh = new THREE.Mesh(TailTLGeom, jetMeshMaterials[i]);
+
+            jet.add(TailTLMesh);
+            TailTLMesh.position.set(-40,15,12)
+            TailTLMesh.rotateX(THREE.Math.degToRad(105));
+
+            var thruster1 = createtailThruster(i)
+
+            jet.add(thruster1);
+            thruster1.position.set(-28,1,7)
+
+            var thruster2 = createtailThruster(i)
+
+            jet.add(thruster2);
+            thruster2.position.set(-28,1,-7)
+
+            var nose = createNose(i)
+
+            jet.add(nose);
+            nose.position.set(0, 0, 0)
+
             var bodyGeom = createMainBody(); //wing body 
 
             //3. Create a mesh for your geometry objects   
-            let bodyMesh = TW.createMesh(bodyGeom, jetMeshMaterials[1]);
+            let bodyMesh = new THREE.Mesh(bodyGeom, jetMeshMaterials[i]);
 
             jet.add(bodyMesh)
             //4. Add the objects to the scene        
@@ -363,7 +548,7 @@
         var scene = new THREE.Scene();
 
         //2. Create jet using global object variable
-        createJet();
+        createJet(1);
 
         //5. Create a renderer to render the scene
         var renderer = new THREE.WebGLRenderer();
@@ -388,7 +573,7 @@
         //set up camera controls so we can use mouse to pan around scene
         setupCameraControls();
 
-        var ambLight = new THREE.AmbientLight(new THREE.Color("white"), .5);
+        var ambLight = new THREE.AmbientLight(new THREE.Color("white"), 1);
         scene.add(ambLight);
 
         scene.add(ah);
