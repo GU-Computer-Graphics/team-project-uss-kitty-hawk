@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Quiz 5</title>
+
+    <style>
+        /* feel free to change the canvas style. If you want to use the entire
+      window, set width: 100% and height: 100% */
+        canvas {
+            display: block;
+            margin: 10px auto;
+            width: 700px;
+            height: 500px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+
+    <script src="./js/three.js"> </script>
+    <script src="./js/SceneUtils.js"></script>
+    <script src="./js/OrbitControls.js"></script>
+    <script src="./js/dat.gui.js"></script>
+    <script src="./js/jet.js"></script>
+
+
+    <script>
+        //0. create any global variables used in your scene               
+
+        var state = {};
+        var ah = new THREE.AxesHelper(50);
+
+        var cameraParams = {
+            near: 1,
+            far: 250,
+            fov: 75,                // degrees
+            aspectRatio: 700 / 500,   // from dimensions of the canvas, see CSS
+            atX: 0,
+            atY: 0,
+            atZ: 0,
+            eyeX: 0,
+            eyeY: 0,
+            eyeZ: 100,
+            upX: 0,
+            upY: 1,
+            upZ: 0
+        };
+
+        
+
+        
+
+        // setupCamera() function creates and returns a camera with the desired parameters
+        function setupCamera(cameraParameters) {
+            // set up an abbreviation 
+            var cp = cameraParameters;
+            // create an initial camera with the desired shape
+            var camera = new THREE.PerspectiveCamera(cp.fov, cp.aspectRatio, cp.near, cp.far);
+            // set the camera location and orientation
+            camera.position.set(cp.eyeX, cp.eyeY, cp.eyeZ);
+            camera.up.set(cp.upX, cp.upY, cp.upZ);
+            camera.lookAt(new THREE.Vector3(cp.atX, cp.atY, cp.atZ));
+            return camera;
+        }
+
+        
+
+        function redoCamera() {
+            scene.remove(camera);
+            camera = setupCamera(cameraParams);
+            scene.add(camera)
+            render();
+        }
+
+        function render() {
+            // a render function; assume global variables scene, renderer, and camera
+            renderer.render(scene, camera);
+        }
+
+        function setupCameraControls() {
+            var cameraControls = new THREE.OrbitControls(camera, canvas);
+            state.cameraControls = cameraControls;
+            cameraControls.addEventListener('change', render);
+            cameraControls.update();
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <h1>More Wedgejet™</h1>
+
+    <script>
+        //1.  Create an initial empty Scene
+        var scene = new THREE.Scene();
+
+        //2. Create jet using global object variable
+        var jet1 = createJet()
+        var jet2 = createJet()
+
+        scene.add(jet1)
+        scene.add(jet2)
+
+        jet1.position.set(0,40,0)
+        jet1.scale.set(.5,.5,.5)
+        jet1.rotateX(THREE.Math.degToRad(180))
+        jet2.position.set(0,0,0)
+
+        //5. Create a renderer to render the scene
+        var renderer = new THREE.WebGLRenderer();
+
+        //6. REPLACING TW.mainInit(), we don't need it anymore! 
+        // adds the canvas to the document,
+        // enables display of 3D coordinate axes, sets up camera controls
+        // TW.mainInit(renderer, scene); //Not needed with the following changes
+        var canvas = renderer.domElement;
+        //note state has been created as a global so we can modify it later if we desire
+        state.renderer = renderer;  // save this so that others can use it.
+        state.scene = scene;        // save this so that others can use it.
+        var parent = document.body;
+        parent.appendChild(canvas);
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        renderer.setClearColor(new THREE.Color(0x2f2f2f), 1); //darker greyish... it's evening!
+
+        //7. Set up a camera for the scene
+        var camera = setupCamera(cameraParams);
+        scene.add(camera);
+
+        //set up camera controls so we can use mouse to pan around scene
+        setupCameraControls();
+
+        var ambLight = new THREE.AmbientLight(new THREE.Color("white"), 1);
+        scene.add(ambLight);
+
+        scene.add(ah);
+
+        render();
+
+    </script>
+
+
+</body>
+
+</html>
