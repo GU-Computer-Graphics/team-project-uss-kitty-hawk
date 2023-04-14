@@ -42,8 +42,8 @@
             atY: 0,
             atZ: 0,
             eyeX: 0,
-            eyeY: 0,
-            eyeZ: -50,
+            eyeY: 60,
+            eyeZ: -70,
             upX: 0,
             upY: 1,
             upZ: 0
@@ -246,6 +246,8 @@ void main(){
         jet1.position.set(0, 10, 0);
         jet1.scale.set(0.2, 0.2, 0.2);
         scene.add(jet1);
+
+        play_jet_takeoff_animation(jet1)
 
 
         let bright_ambient = new THREE.AmbientLight(0xffffff, 0.5);

@@ -425,3 +425,71 @@ function createJet() {
     jetFull.add(jetoutline)
     return jetFull
 }
+
+
+function createBezierCurve(cpList, steps, points_on_curve) {
+    // Using the given list of control points, returns a
+    // THREE.Geometry comprising 'steps' vertices, suitable for
+    // combining with a material and creating a THREE.Line out of.
+    var N = Math.round(steps) + 1 || tMax; // number of vertices
+
+    var geometry = new THREE.Geometry();
+    var curve = new THREE.CubicBezierCurve3();
+
+    var cp = cpList[0];
+    console.log(cp);
+    curve.v0 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    cp = cpList[1];
+    curve.v1 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    cp = cpList[2];
+    curve.v2 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    cp = cpList[3];
+    curve.v3 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+
+    var j, stepSize = 1 / (N - 1);
+    for (j = 0; j < N; j++) {
+        geometry.vertices.push(curve.getPoint(j * stepSize));
+        points_on_curve.push(curve.getPoint(j * stepSize))
+    }
+    return geometry;
+};
+
+var jet_takeoff_cp_list = [
+    [0, 0, 0],
+    [45, 20, 0],
+    [30, 30, 0],
+    [50, 50, 0],
+]
+
+function play_jet_takeoff_animation(jet){
+
+    let points_on_curve = []
+    let time_step = 0;
+    createBezierCurve(jet_takeoff_cp_list, 100, points_on_curve)
+
+
+    let animation_interval = setInterval(function(){
+        if (points_on_curve.length > 0){
+            console.log(points_on_curve[time_step])
+            let point = points_on_curve[time_step]
+            let next_point = points_on_curve[time_step + 1]
+            jet.position.set(point.x, point.y, point.z)
+            jet.lookAt(next_point.x, next_point.y, next_point.z)
+            //rotate jet to account for look at being off
+            jet.rotateY(-THREE.Math.degToRad(90));
+            time_step += 1
+        }
+        else{
+            clearInterval(animation_interval)
+        }
+
+        render();
+
+
+    }, 100)
+
+    
+
+
+
+}
