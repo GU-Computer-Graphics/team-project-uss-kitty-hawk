@@ -477,7 +477,7 @@ function play_jet_takeoff_animation(jet){
 
 
     let animation_interval = setInterval(function(){
-        if (points_on_curve.length > 0){
+        if (points_on_curve.length > 0 && time_step < points_on_curve.length-1){
             console.log(points_on_curve[time_step])
             let point = points_on_curve[time_step]
             let next_point = points_on_curve[time_step + 1]
