@@ -455,17 +455,25 @@ function createBezierCurve(cpList, steps, points_on_curve) {
 };
 
 var jet_takeoff_cp_list = [
-    [0, 0, 0],
-    [45, 20, 0],
-    [30, 30, 0],
-    [50, 50, 0],
+    [0, 20, 0],
+    [100, 20, 0],
+    [100, 50, 0],
+    [200, 90, 0],
 ]
+
 
 function play_jet_takeoff_animation(jet){
 
     let points_on_curve = []
     let time_step = 0;
     createBezierCurve(jet_takeoff_cp_list, 100, points_on_curve)
+
+    //draw curve
+    let curve_geometry = createBezierCurve(jet_takeoff_cp_list, 100, points_on_curve)
+    let curve_material = new THREE.LineBasicMaterial({color: "red"});
+    let curve = new THREE.Line(curve_geometry, curve_material);
+    scene.add(curve);
+
 
 
     let animation_interval = setInterval(function(){
