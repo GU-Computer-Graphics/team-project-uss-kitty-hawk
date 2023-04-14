@@ -251,8 +251,14 @@ void main(){
         play_jet_takeoff_animation(jet1)
 
 
-        let bright_ambient = new THREE.AmbientLight(0xffffff, 0.5);
+        let bright_ambient = new THREE.AmbientLight(0xffffff, 0.8);
         scene.add(bright_ambient);
+
+        let spot_light = new THREE.SpotLight(0xffffff, 0.8);
+        spot_light.position.set(0, 100, 0);
+        spot_light.target = jet1;
+        scene.add(spot_light);
+
 
         // load aircraft carrier object into the scene
          let loader = new THREE.GLTFLoader();
@@ -289,7 +295,7 @@ void main(){
 
         //add axishelper to scene -- created as a global variable
         ah.position.y += 3
-        scene.add(ah);
+        //scene.add(ah);
 
         render()
 

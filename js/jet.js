@@ -517,7 +517,7 @@ function play_jet_takeoff_animation(jet){
     let curve_geometry = createBezierCurve(jet_takeoff_cp_list, 100, points_on_curve)
     let curve_material = new THREE.LineBasicMaterial({color: "red"});
     let curve = new THREE.Line(curve_geometry, curve_material);
-    scene.add(curve);
+    //scene.add(curve);
 
     let animation_speed = 100
     let max_animation_speed = 20
