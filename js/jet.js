@@ -105,32 +105,40 @@ function createWingL() {
 
 
 function createWingR() {
-    var wingGeom = new THREE.Geometry();
-    //vertices
+    var wingGeom = new THREE.BufferGeometry();
     
-    wingGeom.vertices.push(new THREE.Vector3(0, +wingSize.w / 2, wingSize.l / 2)); //0x
-    wingGeom.vertices.push(new THREE.Vector3(0, -wingSize.w / 2, wingSize.l / 2)); //1x
-    wingGeom.vertices.push(new THREE.Vector3(wingSize.h, -wingSize.w / 2, wingSize.l / 2)); //2x
-    wingGeom.vertices.push(new THREE.Vector3(0, -wingSize.w / 2, -wingSize.l / 2)); //4x        
-    wingGeom.vertices.push(new THREE.Vector3(0, +wingSize.w / 2, -wingSize.l / 2)); //5x  
-    wingGeom.vertices.push(new THREE.Vector3(wingSize.h / 3 * 1.2, -wingSize.w / 2, -wingSize.l / 2)); //6x
-
-    //faces
-    wingGeom.faces.push(new THREE.Face3(0, 4, 1)); 
-    wingGeom.faces.push(new THREE.Face3(1, 4, 3)); 
-    wingGeom.faces.push(new THREE.Face3(0, 1, 2)); 
-    wingGeom.faces.push(new THREE.Face3(1, 3, 2)); 
-    wingGeom.faces.push(new THREE.Face3(5, 3, 2)); 
-    wingGeom.faces.push(new THREE.Face3(3, 5, 4)); 
-    wingGeom.faces.push(new THREE.Face3(0, 2, 5)); 
-    wingGeom.faces.push(new THREE.Face3(0, 4, 5)); 
-
-    wingGeom.computeFaceNormals();
-
+    // vertices
+    var vertices = new Float32Array([
+        0, wingSize.w / 2, wingSize.l / 2, // 0x
+        0, -wingSize.w / 2, wingSize.l / 2, // 1x
+        wingSize.h, -wingSize.w / 2, wingSize.l / 2, // 2x
+        0, -wingSize.w / 2, -wingSize.l / 2, // 4x
+        0, wingSize.w / 2, -wingSize.l / 2, // 5x
+        wingSize.h / 3 * 1.2, -wingSize.w / 2, -wingSize.l / 2 // 6x
+    ]);
+    
+    wingGeom.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+    
+    // faces
+    var indices = new Uint16Array([
+        0, 4, 1,
+        1, 4, 3,
+        0, 1, 2,
+        1, 3, 2,
+        5, 3, 2,
+        3, 5, 4,
+        0, 2, 5,
+        0, 4, 5
+    ]);
+    
+    wingGeom.setIndex(new THREE.BufferAttribute(indices, 1));
+    wingGeom.computeVertexNormals();
+    
     return wingGeom;
 }
 
-function createTailFin() {
+
+function createtailfin() {
     var finGeom = new THREE.BufferGeometry();
     var vertices = new Float32Array([
         0, finSize.w / 2, finSize.l / 2, //0x
@@ -458,31 +466,33 @@ function createJet() {
 
 
 function createBezierCurve(cpList, steps, points_on_curve) {
-    // Using the given list of control points, returns a
-    // THREE.Geometry comprising 'steps' vertices, suitable for
-    // combining with a material and creating a THREE.Line out of.
     var N = Math.round(steps) + 1 || tMax; // number of vertices
+    var positions = new Float32Array(N * 3);
 
-    var geometry = new THREE.Geometry();
     var curve = new THREE.CubicBezierCurve3();
-
     var cp = cpList[0];
-    console.log(cp);
-    curve.v0 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    curve.v0.set(cp[0], cp[1], cp[2]);
     cp = cpList[1];
-    curve.v1 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    curve.v1.set(cp[0], cp[1], cp[2]);
     cp = cpList[2];
-    curve.v2 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    curve.v2.set(cp[0], cp[1], cp[2]);
     cp = cpList[3];
-    curve.v3 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    curve.v3.set(cp[0], cp[1], cp[2]);
 
     var j, stepSize = 1 / (N - 1);
     for (j = 0; j < N; j++) {
-        geometry.vertices.push(curve.getPoint(j * stepSize));
-        points_on_curve.push(curve.getPoint(j * stepSize))
+        var point = curve.getPoint(j * stepSize);
+        positions[j * 3] = point.x;
+        positions[j * 3 + 1] = point.y;
+        positions[j * 3 + 2] = point.z;
+        points_on_curve.push(point);
     }
+
+    var geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     return geometry;
-};
+}
+
 
 var jet_takeoff_cp_list = [
     [0, 20, 0],
