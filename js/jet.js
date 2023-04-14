@@ -474,11 +474,11 @@ function play_jet_takeoff_animation(jet){
     let curve = new THREE.Line(curve_geometry, curve_material);
     scene.add(curve);
 
-
-
-    let animation_interval = setInterval(function(){
+    let animation_speed = 100
+    let max_animation_speed = 20
+    let animation_speed_decrement = 4
+    function anim(){
         if (points_on_curve.length > 0 && time_step < (points_on_curve.length/2)-1){
-            console.log(time_step + " " + points_on_curve.length)
             let point = points_on_curve[time_step]
             let next_point = points_on_curve[time_step + 1]
             jet.position.set(point.x, point.y, point.z)
@@ -486,6 +486,14 @@ function play_jet_takeoff_animation(jet){
             //rotate jet to account for look at being off
             jet.rotateY(-THREE.Math.degToRad(90));
             time_step += 1
+            
+            animation_speed -= animation_speed_decrement
+            if (animation_speed < max_animation_speed){
+                animation_speed = max_animation_speed
+            }
+            clearInterval(animation_interval)
+            animation_interval = setInterval(anim, animation_speed)
+            console.log(animation_speed)
         }
         else{
             clearInterval(animation_interval)
@@ -494,7 +502,9 @@ function play_jet_takeoff_animation(jet){
         render();
 
 
-    }, 100)
+    }
+
+    let animation_interval = setInterval(anim, animation_speed)
 
     
 
