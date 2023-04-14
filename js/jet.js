@@ -60,109 +60,147 @@ var bodySize = {
 
 function createWingL() {
     //HINT: (x, z) is your plane, y is your height
-    //1. Create your geometry object
-    var wingGeom = new THREE.Geometry();
-    //vertices
-    wingGeom.vertices.push(new THREE.Vector3(0, +wingSize.w / 2, -wingSize.l / 2)); //0x
-    wingGeom.vertices.push(new THREE.Vector3(0, -wingSize.w / 2, -wingSize.l / 2)); //1x
-    wingGeom.vertices.push(new THREE.Vector3(wingSize.h, -wingSize.w / 2, -wingSize.l / 2)); //2x
-    wingGeom.vertices.push(new THREE.Vector3(0, -wingSize.w / 2, wingSize.l / 2)); //4x        
-    wingGeom.vertices.push(new THREE.Vector3(0, +wingSize.w / 2, +wingSize.l / 2)); //5x  
-    wingGeom.vertices.push(new THREE.Vector3(wingSize.h / 3 * 1.2, -wingSize.w / 2, wingSize.l / 2)); //6x       
+    //1. Define typed arrays
+    const positions = new Float32Array([
+        0, +wingSize.w / 2, -wingSize.l / 2, //0x
+        0, -wingSize.w / 2, -wingSize.l / 2, //1x
+        wingSize.h, -wingSize.w / 2, -wingSize.l / 2, //2x
+        0, -wingSize.w / 2, wingSize.l / 2, //4x
+        0, +wingSize.w / 2, +wingSize.l / 2, //5x
+        wingSize.h / 3 * 1.2, -wingSize.w / 2, wingSize.l / 2 //6x
+    ]);
+    const normals = new Float32Array([
+        0, -1, 0,
+        0, -1, 0,
+        0, -1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        -1, 0, 0,
+        -1, 0, 0,
+    ]);
+    const indices = new Uint16Array([
+        0, 4, 1, //bottom 1
+        1, 4, 3, //bottom 2
+        0, 1, 2, //back 1
+        1, 3, 2, //right 1
+        5, 3, 2, //right 2
+        3, 5, 4, //top 1
+        0, 2, 5, //left 1
+        0, 4, 5, //left 2
+    ]);
 
-    //faces
-    wingGeom.faces.push(new THREE.Face3(0, 4, 1)); //bottom 1
-    wingGeom.faces.push(new THREE.Face3(1, 4, 3)); //bottom 2
-    wingGeom.faces.push(new THREE.Face3(0, 1, 2)); //back 1
-    wingGeom.faces.push(new THREE.Face3(1, 3, 2)); //right 1
-    wingGeom.faces.push(new THREE.Face3(5, 3, 2)); //right 2
-    wingGeom.faces.push(new THREE.Face3(3, 5, 4)); //top 1
-    wingGeom.faces.push(new THREE.Face3(0, 2, 5)); //left 1
-    wingGeom.faces.push(new THREE.Face3(0, 4, 5)); //left 2
+    //2. Create BufferGeometry instance and set attributes
+    const wingGeom = new THREE.BufferGeometry();
+    wingGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    wingGeom.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
+    wingGeom.setIndex(new THREE.BufferAttribute(indices, 1));
 
-    wingGeom.computeFaceNormals();
+    //3. Calculate face normals
+    wingGeom.computeVertexNormals();
 
+    //4. Return BufferGeometry instance
     return wingGeom;
 }
+
 
 function createWingR() {
-    var wingGeom = new THREE.Geometry();
-    //vertices
+    var wingGeom = new THREE.BufferGeometry();
     
-    wingGeom.vertices.push(new THREE.Vector3(0, +wingSize.w / 2, wingSize.l / 2)); //0x
-    wingGeom.vertices.push(new THREE.Vector3(0, -wingSize.w / 2, wingSize.l / 2)); //1x
-    wingGeom.vertices.push(new THREE.Vector3(wingSize.h, -wingSize.w / 2, wingSize.l / 2)); //2x
-    wingGeom.vertices.push(new THREE.Vector3(0, -wingSize.w / 2, -wingSize.l / 2)); //4x        
-    wingGeom.vertices.push(new THREE.Vector3(0, +wingSize.w / 2, -wingSize.l / 2)); //5x  
-    wingGeom.vertices.push(new THREE.Vector3(wingSize.h / 3 * 1.2, -wingSize.w / 2, -wingSize.l / 2)); //6x
-
-    //faces
-    wingGeom.faces.push(new THREE.Face3(0, 4, 1)); 
-    wingGeom.faces.push(new THREE.Face3(1, 4, 3)); 
-    wingGeom.faces.push(new THREE.Face3(0, 1, 2)); 
-    wingGeom.faces.push(new THREE.Face3(1, 3, 2)); 
-    wingGeom.faces.push(new THREE.Face3(5, 3, 2)); 
-    wingGeom.faces.push(new THREE.Face3(3, 5, 4)); 
-    wingGeom.faces.push(new THREE.Face3(0, 2, 5)); 
-    wingGeom.faces.push(new THREE.Face3(0, 4, 5)); 
-
-    wingGeom.computeFaceNormals();
-
+    // vertices
+    var vertices = new Float32Array([
+        0, wingSize.w / 2, wingSize.l / 2, // 0x
+        0, -wingSize.w / 2, wingSize.l / 2, // 1x
+        wingSize.h, -wingSize.w / 2, wingSize.l / 2, // 2x
+        0, -wingSize.w / 2, -wingSize.l / 2, // 4x
+        0, wingSize.w / 2, -wingSize.l / 2, // 5x
+        wingSize.h / 3 * 1.2, -wingSize.w / 2, -wingSize.l / 2 // 6x
+    ]);
+    
+    wingGeom.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+    
+    // faces
+    var indices = new Uint16Array([
+        0, 4, 1,
+        1, 4, 3,
+        0, 1, 2,
+        1, 3, 2,
+        5, 3, 2,
+        3, 5, 4,
+        0, 2, 5,
+        0, 4, 5
+    ]);
+    
+    wingGeom.setIndex(new THREE.BufferAttribute(indices, 1));
+    wingGeom.computeVertexNormals();
+    
     return wingGeom;
 }
 
+
 function createtailfin() {
-    var finGeom = new THREE.Geometry();
-    //vertices
-    
-    finGeom.vertices.push(new THREE.Vector3(0, +finSize.w / 2, finSize.l / 2)); //0x
-    finGeom.vertices.push(new THREE.Vector3(0, -finSize.w / 2, finSize.l / 2)); //1x
-    finGeom.vertices.push(new THREE.Vector3(finSize.h, 0, finSize.l / 2)); //2x
-    finGeom.vertices.push(new THREE.Vector3(0, -finSize.w / 2, -finSize.l / 2)); //4x        
-    finGeom.vertices.push(new THREE.Vector3(0, +finSize.w / 2, -finSize.l / 2)); //5x  
-    finGeom.vertices.push(new THREE.Vector3(finSize.h / 3 * 1.2, 0, -finSize.l / 2)); //6x
+    var finGeom = new THREE.BufferGeometry();
+    var vertices = new Float32Array([
+        0, finSize.w / 2, finSize.l / 2, //0x
+        0, -finSize.w / 2, finSize.l / 2, //1x
+        finSize.h, 0, finSize.l / 2, //2x
+        0, -finSize.w / 2, -finSize.l / 2, //4x        
+        0, finSize.w / 2, -finSize.l / 2, //5x  
+        finSize.h / 3 * 1.2, 0, -finSize.l / 2 //6x
+    ]);
+    finGeom.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
 
-    //faces
-    finGeom.faces.push(new THREE.Face3(0, 4, 1)); 
-    finGeom.faces.push(new THREE.Face3(1, 4, 3)); 
-    finGeom.faces.push(new THREE.Face3(0, 1, 2)); 
-    finGeom.faces.push(new THREE.Face3(1, 3, 2)); 
-    finGeom.faces.push(new THREE.Face3(5, 3, 2)); 
-    finGeom.faces.push(new THREE.Face3(3, 5, 4)); 
-    finGeom.faces.push(new THREE.Face3(0, 2, 5)); 
-    finGeom.faces.push(new THREE.Face3(0, 4, 5)); 
+    var indices = new Uint16Array([
+        0, 4, 1,
+        1, 4, 3,
+        0, 1, 2,
+        1, 3, 2,
+        5, 3, 2,
+        3, 5, 4,
+        0, 2, 5,
+        0, 4, 5
+    ]);
+    finGeom.setIndex(new THREE.BufferAttribute(indices, 1));
 
-    finGeom.computeFaceNormals();
+    finGeom.computeVertexNormals();
 
     return finGeom;
 }
 
 function createIntake() {
-    var intakeGeom = new THREE.Geometry();
-    //vertices
+    const intakeSize = { w: 10, h: 20, l: 30 };
     
-    intakeGeom.vertices.push(new THREE.Vector3(+intakeSize.w / 2, 0, -intakeSize.l / 2)); //0x
-    intakeGeom.vertices.push(new THREE.Vector3(-intakeSize.w / 2, 0, -intakeSize.l / 2)); //1x
-    intakeGeom.vertices.push(new THREE.Vector3(-intakeSize.w / 2, intakeSize.h, -intakeSize.l / 2)); //2x
-    intakeGeom.vertices.push(new THREE.Vector3(intakeSize.w / 2, intakeSize.h, -intakeSize.l / 2)); //3
-    intakeGeom.vertices.push(new THREE.Vector3(-intakeSize.w / 2, 0, intakeSize.l / 2)); //4x        
-    intakeGeom.vertices.push(new THREE.Vector3(+intakeSize.w / 2, 0, +intakeSize.l / 2)); //5x        
-
-    //faces
-    intakeGeom.faces.push(new THREE.Face3(0, 5, 1)); 
-    intakeGeom.faces.push(new THREE.Face3(1, 5, 4)); 
-    intakeGeom.faces.push(new THREE.Face3(0, 1, 2)); 
-    intakeGeom.faces.push(new THREE.Face3(0, 2, 3)); 
-    intakeGeom.faces.push(new THREE.Face3(3, 5, 0)); 
-    intakeGeom.faces.push(new THREE.Face3(1, 4, 2)); 
-    intakeGeom.faces.push(new THREE.Face3(3, 2, 5)); 
-    intakeGeom.faces.push(new THREE.Face3(2, 4, 5)); 
-
-    intakeGeom.computeFaceNormals();
-
-
-    return intakeGeom
+    const intakeGeom = new THREE.BufferGeometry();
+  
+    // vertices
+    const vertices = new Float32Array([
+      intakeSize.w / 2, 0, -intakeSize.l / 2, // 0
+      -intakeSize.w / 2, 0, -intakeSize.l / 2, // 1
+      -intakeSize.w / 2, intakeSize.h, -intakeSize.l / 2, // 2
+      intakeSize.w / 2, intakeSize.h, -intakeSize.l / 2, // 3
+      -intakeSize.w / 2, 0, intakeSize.l / 2, // 4
+      intakeSize.w / 2, 0, intakeSize.l / 2, // 5
+    ]);
+    intakeGeom.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+  
+    // faces
+    const indices = new Uint16Array([
+      0, 5, 1,
+      1, 5, 4,
+      0, 1, 2,
+      0, 2, 3,
+      3, 5, 0,
+      1, 4, 2,
+      3, 2, 5,
+      2, 4, 5,
+    ]);
+    intakeGeom.setIndex(new THREE.BufferAttribute(indices, 1));
+  
+    intakeGeom.computeVertexNormals();
+  
+    return intakeGeom;
 }
+  
 
 function createtailThruster(i) {
     var Thruster = new THREE.Object3D();
@@ -254,88 +292,93 @@ function createNose(i) {
 }
 
 function createMainBody() {
-    var bodyGeom = new THREE.Geometry();
-    //vertices on base
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 1.2)); //0x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5, 0, -bodySize.l)); //1x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5, 0, -bodySize.l / 1.1)); //2x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3, 0, -bodySize.l / 1.9)); //3x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2, 0, -bodySize.l / 4)); //4x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2, 0, bodySize.l / 4)); //5x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3, 0, bodySize.l / 1.9)); //6x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5, 0, bodySize.l / 1.1)); //7x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5, 0, bodySize.l)); //8x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 1.2)); //9x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 4)); //10x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, 0, bodySize.l / 4)); //11x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, 0, -bodySize.l / 4)); //12x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 4)); //13x
-    
-    //vertices on top
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 1.2 + bodySize.d)); //14x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, -bodySize.l + bodySize.d)); //15x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, -bodySize.l / 1.1 + bodySize.d)); //16x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, -bodySize.l / 1.9 + bodySize.d)); //17x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, -bodySize.l / 4 + bodySize.d)); //18x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, bodySize.l / 4 - bodySize.d)); //19x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, bodySize.l / 1.9 - bodySize.d)); //20x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, bodySize.l / 1.1 - bodySize.d)); //21x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, bodySize.l - bodySize.d)); //22x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 1.2 - bodySize.d)); //23x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 4)); //24x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, bodySize.l / 4)); //25x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, -bodySize.l / 4)); //26x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 4)); //27x
+    var bodyGeom = new THREE.BufferGeometry();
 
-    //faces
-    bodyGeom.faces.push(new THREE.Face3(4, 5, 3));
-    bodyGeom.faces.push(new THREE.Face3(3, 5, 6));
-    bodyGeom.faces.push(new THREE.Face3(3, 6, 2));
-    bodyGeom.faces.push(new THREE.Face3(2, 6, 7));
-    bodyGeom.faces.push(new THREE.Face3(2, 7, 1));
-    bodyGeom.faces.push(new THREE.Face3(7, 1, 8));
-    bodyGeom.faces.push(new THREE.Face3(1, 8, 0));
-    bodyGeom.faces.push(new THREE.Face3(0, 8, 9));
-    bodyGeom.faces.push(new THREE.Face3(13, 10, 12));
-    bodyGeom.faces.push(new THREE.Face3(10, 12, 11));
-    bodyGeom.faces.push(new THREE.Face3(18, 19, 17));
-    bodyGeom.faces.push(new THREE.Face3(17, 19, 20));
-    bodyGeom.faces.push(new THREE.Face3(16, 17, 20));
-    bodyGeom.faces.push(new THREE.Face3(16, 20, 21));
-    bodyGeom.faces.push(new THREE.Face3(15, 16, 21));
-    bodyGeom.faces.push(new THREE.Face3(15, 21, 22));
-    bodyGeom.faces.push(new THREE.Face3(14, 15, 22));
-    bodyGeom.faces.push(new THREE.Face3(14, 22, 23));
-    bodyGeom.faces.push(new THREE.Face3(24, 25, 26));
-    bodyGeom.faces.push(new THREE.Face3(24, 26, 27));
-    bodyGeom.faces.push(new THREE.Face3(0, 14, 27));
-    bodyGeom.faces.push(new THREE.Face3(0, 27, 13));
-    bodyGeom.faces.push(new THREE.Face3(27, 13, 26));
-    bodyGeom.faces.push(new THREE.Face3(13, 26, 12));
-    bodyGeom.faces.push(new THREE.Face3(26, 12, 25));
-    bodyGeom.faces.push(new THREE.Face3(12, 25, 11));
-    bodyGeom.faces.push(new THREE.Face3(11, 25, 24));
-    bodyGeom.faces.push(new THREE.Face3(11, 24, 10));
-    bodyGeom.faces.push(new THREE.Face3(10, 24, 23));
-    bodyGeom.faces.push(new THREE.Face3(10, 23, 9));
-    bodyGeom.faces.push(new THREE.Face3(9, 23, 22));
-    bodyGeom.faces.push(new THREE.Face3(9, 22, 8));
-    bodyGeom.faces.push(new THREE.Face3(8, 22, 21));
-    bodyGeom.faces.push(new THREE.Face3(8, 21, 7));
-    bodyGeom.faces.push(new THREE.Face3(7, 21, 20));
-    bodyGeom.faces.push(new THREE.Face3(7, 20, 6));
-    bodyGeom.faces.push(new THREE.Face3(6, 20, 19));
-    bodyGeom.faces.push(new THREE.Face3(6, 19, 5));
-    bodyGeom.faces.push(new THREE.Face3(5, 19, 18));
-    bodyGeom.faces.push(new THREE.Face3(5, 18, 4));
-    bodyGeom.faces.push(new THREE.Face3(4, 18, 17));
-    bodyGeom.faces.push(new THREE.Face3(4, 17, 3));
-    bodyGeom.faces.push(new THREE.Face3(3, 17, 16));
-    bodyGeom.faces.push(new THREE.Face3(3, 16, 2));
-    bodyGeom.faces.push(new THREE.Face3(2, 16, 15));
-    bodyGeom.faces.push(new THREE.Face3(2, 15, 1));
-    bodyGeom.faces.push(new THREE.Face3(1, 15, 14));
-    bodyGeom.faces.push(new THREE.Face3(1, 14, 0));
+
+    let points = [];
+    points.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 1.2)); //0x
+    points.push(new THREE.Vector3(bodySize.w / 5, 0, -bodySize.l)); //1x
+    points.push(new THREE.Vector3(bodySize.w / 3.5, 0, -bodySize.l / 1.1)); //2x
+    points.push(new THREE.Vector3(bodySize.w / 2.3, 0, -bodySize.l / 1.9)); //3x
+    points.push(new THREE.Vector3(bodySize.w / 2, 0, -bodySize.l / 4)); //4x
+    points.push(new THREE.Vector3(bodySize.w / 2, 0, bodySize.l / 4)); //5x
+    points.push(new THREE.Vector3(bodySize.w / 2.3, 0, bodySize.l / 1.9)); //6x
+    points.push(new THREE.Vector3(bodySize.w / 3.5, 0, bodySize.l / 1.1)); //7x
+    points.push(new THREE.Vector3(bodySize.w / 5, 0, bodySize.l)); //8x
+    points.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 1.2)); //9x
+    points.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 4)); //10x
+    points.push(new THREE.Vector3(-bodySize.w / 2, 0, bodySize.l / 4)); //11x
+    points.push(new THREE.Vector3(-bodySize.w / 2, 0, -bodySize.l / 4)); //12x
+    points.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 4)); //13x
+
+    //vertices on top
+    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 1.2 + bodySize.d)); //14x
+    points.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, -bodySize.l + bodySize.d)); //15x
+    points.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, -bodySize.l / 1.1 + bodySize.d)); //16x
+    points.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, -bodySize.l / 1.9 + bodySize.d)); //17x
+    points.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, -bodySize.l / 4 + bodySize.d)); //18x
+    points.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, bodySize.l / 4 - bodySize.d)); //19x
+    points.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, bodySize.l / 1.9 - bodySize.d)); //20x
+    points.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, bodySize.l / 1.1 - bodySize.d)); //21x
+    points.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, bodySize.l - bodySize.d)); //22x
+    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 1.2 - bodySize.d)); //23x
+    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 4)); //24x
+    points.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, bodySize.l / 4)); //25x
+    points.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, -bodySize.l / 4)); //26x
+    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 4)); //27x
+
+   
+    bodyGeom.setIndex([
+        4, 5, 3,
+        3, 5, 6,
+        3, 6, 2,
+        2, 6, 7,
+        2, 7, 1,
+        7, 1, 8,
+        1, 8, 0,
+        0, 8, 9,
+        13, 10, 12,
+        10, 12, 11,
+        18, 19, 17,
+        17, 19, 20,
+        16, 17, 20,
+        16, 20, 21,
+        15, 16, 21,
+        15, 21, 22,
+        14, 15, 22,
+        14, 22, 23,
+        24, 25, 26,
+        24, 26, 27,
+        0, 14, 27,
+        0, 27, 13,
+        27, 13, 26,
+        13, 26, 12,
+        26, 12, 25,
+        12, 25, 11,
+        11, 25, 24,
+        11, 24, 10,
+        10, 24, 23,
+        10, 23, 9,
+        9, 23, 22,
+        9, 22, 8,
+        8, 22, 21,
+        8, 21, 7,
+        7, 21, 20,
+        7, 20, 6,
+        6, 20, 19,
+        6, 19, 5,
+        5, 19, 18,
+        5, 18, 4,
+        4, 18, 17,
+        4, 17, 3,
+        3, 17, 16,
+        3, 16, 2,
+        2, 16, 15,
+        2, 15, 1,
+        1, 15, 14,
+        1, 14, 0
+
+    ]);
 
     bodyGeom.computeFaceNormals();
 
@@ -428,31 +471,33 @@ function createJet() {
 
 
 function createBezierCurve(cpList, steps, points_on_curve) {
-    // Using the given list of control points, returns a
-    // THREE.Geometry comprising 'steps' vertices, suitable for
-    // combining with a material and creating a THREE.Line out of.
     var N = Math.round(steps) + 1 || tMax; // number of vertices
+    var positions = new Float32Array(N * 3);
 
-    var geometry = new THREE.Geometry();
     var curve = new THREE.CubicBezierCurve3();
-
     var cp = cpList[0];
-    console.log(cp);
-    curve.v0 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    curve.v0.set(cp[0], cp[1], cp[2]);
     cp = cpList[1];
-    curve.v1 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    curve.v1.set(cp[0], cp[1], cp[2]);
     cp = cpList[2];
-    curve.v2 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    curve.v2.set(cp[0], cp[1], cp[2]);
     cp = cpList[3];
-    curve.v3 = new THREE.Vector3(cp[0], cp[1], cp[2]);
+    curve.v3.set(cp[0], cp[1], cp[2]);
 
     var j, stepSize = 1 / (N - 1);
     for (j = 0; j < N; j++) {
-        geometry.vertices.push(curve.getPoint(j * stepSize));
-        points_on_curve.push(curve.getPoint(j * stepSize))
+        var point = curve.getPoint(j * stepSize);
+        positions[j * 3] = point.x;
+        positions[j * 3 + 1] = point.y;
+        positions[j * 3 + 2] = point.z;
+        points_on_curve.push(point);
     }
+
+    var geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     return geometry;
-};
+}
+
 
 var jet_takeoff_cp_list = [
     [0, 20, 0],
