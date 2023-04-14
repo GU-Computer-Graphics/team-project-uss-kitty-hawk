@@ -292,88 +292,93 @@ function createNose(i) {
 }
 
 function createMainBody() {
-    var bodyGeom = new THREE.Geometry();
-    //vertices on base
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 1.2)); //0x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5, 0, -bodySize.l)); //1x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5, 0, -bodySize.l / 1.1)); //2x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3, 0, -bodySize.l / 1.9)); //3x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2, 0, -bodySize.l / 4)); //4x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2, 0, bodySize.l / 4)); //5x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3, 0, bodySize.l / 1.9)); //6x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5, 0, bodySize.l / 1.1)); //7x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5, 0, bodySize.l)); //8x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 1.2)); //9x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 4)); //10x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, 0, bodySize.l / 4)); //11x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, 0, -bodySize.l / 4)); //12x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 4)); //13x
-    
-    //vertices on top
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 1.2 + bodySize.d)); //14x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, -bodySize.l + bodySize.d)); //15x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, -bodySize.l / 1.1 + bodySize.d)); //16x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, -bodySize.l / 1.9 + bodySize.d)); //17x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, -bodySize.l / 4 + bodySize.d)); //18x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, bodySize.l / 4 - bodySize.d)); //19x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, bodySize.l / 1.9 - bodySize.d)); //20x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, bodySize.l / 1.1 - bodySize.d)); //21x
-    bodyGeom.vertices.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, bodySize.l - bodySize.d)); //22x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 1.2 - bodySize.d)); //23x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 4)); //24x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, bodySize.l / 4)); //25x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, -bodySize.l / 4)); //26x
-    bodyGeom.vertices.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 4)); //27x
+    var bodyGeom = new THREE.BufferGeometry();
 
-    //faces
-    bodyGeom.faces.push(new THREE.Face3(4, 5, 3));
-    bodyGeom.faces.push(new THREE.Face3(3, 5, 6));
-    bodyGeom.faces.push(new THREE.Face3(3, 6, 2));
-    bodyGeom.faces.push(new THREE.Face3(2, 6, 7));
-    bodyGeom.faces.push(new THREE.Face3(2, 7, 1));
-    bodyGeom.faces.push(new THREE.Face3(7, 1, 8));
-    bodyGeom.faces.push(new THREE.Face3(1, 8, 0));
-    bodyGeom.faces.push(new THREE.Face3(0, 8, 9));
-    bodyGeom.faces.push(new THREE.Face3(13, 10, 12));
-    bodyGeom.faces.push(new THREE.Face3(10, 12, 11));
-    bodyGeom.faces.push(new THREE.Face3(18, 19, 17));
-    bodyGeom.faces.push(new THREE.Face3(17, 19, 20));
-    bodyGeom.faces.push(new THREE.Face3(16, 17, 20));
-    bodyGeom.faces.push(new THREE.Face3(16, 20, 21));
-    bodyGeom.faces.push(new THREE.Face3(15, 16, 21));
-    bodyGeom.faces.push(new THREE.Face3(15, 21, 22));
-    bodyGeom.faces.push(new THREE.Face3(14, 15, 22));
-    bodyGeom.faces.push(new THREE.Face3(14, 22, 23));
-    bodyGeom.faces.push(new THREE.Face3(24, 25, 26));
-    bodyGeom.faces.push(new THREE.Face3(24, 26, 27));
-    bodyGeom.faces.push(new THREE.Face3(0, 14, 27));
-    bodyGeom.faces.push(new THREE.Face3(0, 27, 13));
-    bodyGeom.faces.push(new THREE.Face3(27, 13, 26));
-    bodyGeom.faces.push(new THREE.Face3(13, 26, 12));
-    bodyGeom.faces.push(new THREE.Face3(26, 12, 25));
-    bodyGeom.faces.push(new THREE.Face3(12, 25, 11));
-    bodyGeom.faces.push(new THREE.Face3(11, 25, 24));
-    bodyGeom.faces.push(new THREE.Face3(11, 24, 10));
-    bodyGeom.faces.push(new THREE.Face3(10, 24, 23));
-    bodyGeom.faces.push(new THREE.Face3(10, 23, 9));
-    bodyGeom.faces.push(new THREE.Face3(9, 23, 22));
-    bodyGeom.faces.push(new THREE.Face3(9, 22, 8));
-    bodyGeom.faces.push(new THREE.Face3(8, 22, 21));
-    bodyGeom.faces.push(new THREE.Face3(8, 21, 7));
-    bodyGeom.faces.push(new THREE.Face3(7, 21, 20));
-    bodyGeom.faces.push(new THREE.Face3(7, 20, 6));
-    bodyGeom.faces.push(new THREE.Face3(6, 20, 19));
-    bodyGeom.faces.push(new THREE.Face3(6, 19, 5));
-    bodyGeom.faces.push(new THREE.Face3(5, 19, 18));
-    bodyGeom.faces.push(new THREE.Face3(5, 18, 4));
-    bodyGeom.faces.push(new THREE.Face3(4, 18, 17));
-    bodyGeom.faces.push(new THREE.Face3(4, 17, 3));
-    bodyGeom.faces.push(new THREE.Face3(3, 17, 16));
-    bodyGeom.faces.push(new THREE.Face3(3, 16, 2));
-    bodyGeom.faces.push(new THREE.Face3(2, 16, 15));
-    bodyGeom.faces.push(new THREE.Face3(2, 15, 1));
-    bodyGeom.faces.push(new THREE.Face3(1, 15, 14));
-    bodyGeom.faces.push(new THREE.Face3(1, 14, 0));
+
+    let points = [];
+    points.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 1.2)); //0x
+    points.push(new THREE.Vector3(bodySize.w / 5, 0, -bodySize.l)); //1x
+    points.push(new THREE.Vector3(bodySize.w / 3.5, 0, -bodySize.l / 1.1)); //2x
+    points.push(new THREE.Vector3(bodySize.w / 2.3, 0, -bodySize.l / 1.9)); //3x
+    points.push(new THREE.Vector3(bodySize.w / 2, 0, -bodySize.l / 4)); //4x
+    points.push(new THREE.Vector3(bodySize.w / 2, 0, bodySize.l / 4)); //5x
+    points.push(new THREE.Vector3(bodySize.w / 2.3, 0, bodySize.l / 1.9)); //6x
+    points.push(new THREE.Vector3(bodySize.w / 3.5, 0, bodySize.l / 1.1)); //7x
+    points.push(new THREE.Vector3(bodySize.w / 5, 0, bodySize.l)); //8x
+    points.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 1.2)); //9x
+    points.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 4)); //10x
+    points.push(new THREE.Vector3(-bodySize.w / 2, 0, bodySize.l / 4)); //11x
+    points.push(new THREE.Vector3(-bodySize.w / 2, 0, -bodySize.l / 4)); //12x
+    points.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 4)); //13x
+
+    //vertices on top
+    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 1.2 + bodySize.d)); //14x
+    points.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, -bodySize.l + bodySize.d)); //15x
+    points.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, -bodySize.l / 1.1 + bodySize.d)); //16x
+    points.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, -bodySize.l / 1.9 + bodySize.d)); //17x
+    points.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, -bodySize.l / 4 + bodySize.d)); //18x
+    points.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, bodySize.l / 4 - bodySize.d)); //19x
+    points.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, bodySize.l / 1.9 - bodySize.d)); //20x
+    points.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, bodySize.l / 1.1 - bodySize.d)); //21x
+    points.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, bodySize.l - bodySize.d)); //22x
+    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 1.2 - bodySize.d)); //23x
+    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 4)); //24x
+    points.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, bodySize.l / 4)); //25x
+    points.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, -bodySize.l / 4)); //26x
+    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 4)); //27x
+
+   
+    bodyGeom.setIndex([
+        4, 5, 3,
+        3, 5, 6,
+        3, 6, 2,
+        2, 6, 7,
+        2, 7, 1,
+        7, 1, 8,
+        1, 8, 0,
+        0, 8, 9,
+        13, 10, 12,
+        10, 12, 11,
+        18, 19, 17,
+        17, 19, 20,
+        16, 17, 20,
+        16, 20, 21,
+        15, 16, 21,
+        15, 21, 22,
+        14, 15, 22,
+        14, 22, 23,
+        24, 25, 26,
+        24, 26, 27,
+        0, 14, 27,
+        0, 27, 13,
+        27, 13, 26,
+        13, 26, 12,
+        26, 12, 25,
+        12, 25, 11,
+        11, 25, 24,
+        11, 24, 10,
+        10, 24, 23,
+        10, 23, 9,
+        9, 23, 22,
+        9, 22, 8,
+        8, 22, 21,
+        8, 21, 7,
+        7, 21, 20,
+        7, 20, 6,
+        6, 20, 19,
+        6, 19, 5,
+        5, 19, 18,
+        5, 18, 4,
+        4, 18, 17,
+        4, 17, 3,
+        3, 17, 16,
+        3, 16, 2,
+        2, 16, 15,
+        2, 15, 1,
+        1, 15, 14,
+        1, 14, 0
+
+    ]);
 
     bodyGeom.computeFaceNormals();
 
