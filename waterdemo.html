@@ -168,20 +168,33 @@
     water_box_mat.uniforms.time.value = 0.0;
 
 
-    function create_water(fidelity){
+    function create_water(fidelity, water_count){
 
       //get camera position
 
-      //create primary water box 
-      let water_box_geo = new THREE.BoxGeometry( 100, 100, 1, fidelity, fidelity, 0 );
-      let water_box = new THREE.Mesh( water_box_geo, water_box_mat );
-      water_box.position.set(0, 0, 0);
-      water_box.rotateX(Math.PI/2);
-      let cross_box = water_box.clone();
-      cross_box.rotateZ(Math.PI/4);
+      //place water in a grid
+      let box_distance = 100;
+      for(let i = 0; i < water_count; i++){
 
-      scene.add( water_box );
-      scene.add( cross_box );
+        const x = (i % 10) * box_distance;
+        const y = Math.floor(i / 10) * box_distance;
+
+        const fidelity_dropoff_rate = 0.5;
+        let fidelity_dropoff_multiplier = Math.pow(fidelity_dropoff_rate, i);
+
+        
+        let water_geom = new THREE.BoxGeometry( 100, 100, 1, fidelity*fidelity_dropoff_multiplier, fidelity*fidelity_dropoff_multiplier, 0 );
+        let water_box = new THREE.Mesh( water_geom, water_box_mat );
+        water_box.position.set(x, y, 0);
+        water_box.rotateX(Math.PI/2);
+        let cross_box = water_box.clone();
+        cross_box.rotateZ(Math.PI/4);
+        scene.add( water_box );
+        scene.add( cross_box );
+      }
+
+
+
 
 
 
@@ -193,7 +206,7 @@
 
     var scene = new THREE.Scene();
 
-    create_water(1000);
+    create_water(1000, 6);
 
 
 
