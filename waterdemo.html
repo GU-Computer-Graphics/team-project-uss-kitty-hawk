@@ -12,7 +12,7 @@
     }
   </style>
 
-  <script src="./js/three.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js" integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg==" crossorigin="anonymous"></script>
   <script src="./js/OrbitControls.js"></script>
   <script src="./js/dat.gui.js"></script>
   <script src="./js/tw.js"></script>
@@ -116,7 +116,6 @@
 
   
       }`
-    
 
     // parameters of the scene and animation
 
@@ -141,12 +140,8 @@
     var defaultGuiParams = Object.assign({}, guiParams);
 
 
-    var scene = new THREE.Scene();
 
-
-    var water_box_geom = new THREE.BoxGeometry(400, 400, 1, 800,800,1);
-
-    var water_box_mat = new THREE.ShaderMaterial({
+      var water_box_mat = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0.0 },
         color: { value: new THREE.Color(0x0000ff),
@@ -173,15 +168,37 @@
     water_box_mat.uniforms.time.value = 0.0;
 
 
-    var water_box = new THREE.Mesh(water_box_geom, water_box_mat);
-    water_box.position.set(0, 0, 0);
-    water_box.rotation.x = Math.PI / 2;
-    scene.add(water_box);
+    function create_water(fidelity){
 
-    var water_box_2 = new THREE.Mesh(water_box_geom, water_box_mat);
-    water_box_2.rotation.x = Math.PI / 2;
-    water_box_2.rotation.z = Math.PI / 4;
-    scene.add(water_box_2);
+      //get camera position
+
+      //create primary water box 
+      let water_box_geo = new THREE.BoxGeometry( 100, 100, 1, fidelity, fidelity, 0 );
+      let water_box = new THREE.Mesh( water_box_geo, water_box_mat );
+      water_box.position.set(0, 0, 0);
+      water_box.rotateX(Math.PI/2);
+      let cross_box = water_box.clone();
+      cross_box.rotateZ(Math.PI/4);
+
+      scene.add( water_box );
+      scene.add( cross_box );
+
+
+
+
+
+
+    }
+    
+
+    var scene = new THREE.Scene();
+
+    create_water(1000);
+
+
+
+
+
 
 
     var renderer = new THREE.WebGLRenderer();
