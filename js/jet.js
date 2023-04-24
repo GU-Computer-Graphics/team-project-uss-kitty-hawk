@@ -29,6 +29,20 @@ var jetMeshMaterials = [
         side: THREE.DoubleSide,
         wireframe: true
     }),
+    new THREE.MeshPhongMaterial({
+        color: new THREE.Color("white"),
+        specular: new THREE.Color("white"),
+        shininess: 10,
+        flatShading: THREE.FlatShading,
+        side: THREE.DoubleSide
+    }),
+    new THREE.MeshPhongMaterial({
+        color: new THREE.Color("silver"),
+        specular: new THREE.Color("white"),
+        shininess: 10,
+        flatShading: THREE.FlatShading,
+        side: THREE.DoubleSide
+    }),
 
 ]
 
@@ -191,6 +205,163 @@ function createtailThruster(i) {
     frontMesh.rotateZ(THREE.Math.degToRad(90))
     intakeMesh.rotation.set(THREE.Math.degToRad(180), THREE.Math.degToRad(90), 0);
     return Thruster;
+}
+
+function createFrontLandingGear(i) {
+    var j = 4
+    if(i == 3) { j = i - 1}
+    var gear = new THREE.Object3D();
+    var wheelGeom = new THREE.CylinderGeometry(2, 2, .5, 20);
+    var wheelMesh = new THREE.Mesh(wheelGeom, jetMeshMaterials[i]);
+    var wheel2Mesh = new THREE.Mesh(wheelGeom, jetMeshMaterials[i]);
+
+    var tireGeom = new THREE.TorusGeometry( 3, 1, 16, 30 )
+    var tireMesh = new THREE.Mesh(tireGeom, jetMeshMaterials[0])
+    var tire2Mesh  = new THREE.Mesh(tireGeom, jetMeshMaterials[0])
+
+    var shaftGeom = new THREE.CylinderGeometry(1, 1, 5, 20);
+    var shaftMesh = new THREE.Mesh(shaftGeom, jetMeshMaterials[j]);
+
+    var topGeom = new THREE.CylinderGeometry(1.5, 1.5, 8, 20)
+    var topMesh = new THREE.Mesh(topGeom, jetMeshMaterials[j])
+
+    var rodGeom = new THREE.CylinderGeometry(1, 1, 20, 20)
+    var rodMesh = new THREE.Mesh(rodGeom, jetMeshMaterials[j])
+
+    var connectorGeom = new THREE.CylinderGeometry(.5, .5, 7, 20)
+    var connectorMesh = new THREE.Mesh(connectorGeom, jetMeshMaterials[5])
+
+    var connectorTGeom = new THREE.CylinderGeometry(1, 1, 4, 20)
+    var connectorTMesh = new THREE.Mesh(connectorTGeom, jetMeshMaterials[j])
+
+    gear.add(wheelMesh)
+    gear.add(wheel2Mesh)
+    gear.add(tireMesh)
+    gear.add(tire2Mesh)
+    gear.add(shaftMesh)
+    gear.add(topMesh)
+    gear.add(rodMesh)
+    gear.add(connectorMesh)
+    gear.add(connectorTMesh)
+
+    wheelMesh.position.set(0,-10,-3)
+    tireMesh.position.set(0,-10,-3)
+    wheel2Mesh.position.set(0,-10,3)
+    tire2Mesh.position.set(0,-10,3)
+    shaftMesh.position.set(0,-10,0)
+    topMesh.position.set(0,-4,0)
+    rodMesh.position.set(0,0,0)
+    connectorMesh.position.set(-3,-2,0)
+    connectorTMesh.position.set(-5,0,0)
+
+    wheelMesh.rotateX(THREE.Math.degToRad(-90));
+    wheel2Mesh.rotateX(THREE.Math.degToRad(-90));
+    shaftMesh.rotateX(THREE.Math.degToRad(90))
+    //topMesh.rotateZ(THREE.Math.degToRad(-70))
+    //rodMesh.rotateZ(THREE.Math.degToRad(-10))
+    connectorMesh.rotateZ(THREE.Math.degToRad(40))
+    connectorTMesh.rotateZ(THREE.Math.degToRad(40))
+    return gear;
+}
+
+function createBackLandingGearL(i) {
+    var j = 4
+    if(i == 3) { j = i - 1}
+    var gear = new THREE.Object3D();
+    var wheelGeom = new THREE.CylinderGeometry(2, 2, .5, 20);
+    var wheelMesh = new THREE.Mesh(wheelGeom, jetMeshMaterials[i]);
+
+    var tireGeom = new THREE.TorusGeometry( 3, 1, 16, 30 )
+    var tireMesh = new THREE.Mesh(tireGeom, jetMeshMaterials[0])
+
+    var shaftGeom = new THREE.CylinderGeometry(1, 1, 3, 20);
+    var shaftMesh = new THREE.Mesh(shaftGeom, jetMeshMaterials[j]);
+
+    var topGeom = new THREE.CylinderGeometry(1, 1, 8, 20)
+    var topMesh = new THREE.Mesh(topGeom, jetMeshMaterials[j])
+
+    var rodGeom = new THREE.CylinderGeometry(1, 1, 8, 20)
+    var rodMesh = new THREE.Mesh(rodGeom, jetMeshMaterials[j])
+
+    var connectorGeom = new THREE.CylinderGeometry(.5, .5, 6, 20)
+    var connectorMesh = new THREE.Mesh(connectorGeom, jetMeshMaterials[5])
+
+    var connectorTGeom = new THREE.CylinderGeometry(1, 1, 4, 20)
+    var connectorTMesh = new THREE.Mesh(connectorTGeom, jetMeshMaterials[j])
+
+    gear.add(wheelMesh)
+    gear.add(tireMesh)
+    gear.add(shaftMesh)
+    gear.add(topMesh)
+    gear.add(rodMesh)
+    gear.add(connectorMesh)
+    gear.add(connectorTMesh)
+
+    wheelMesh.position.set(0,-5,-2)
+    tireMesh.position.set(0,-5,-2)
+    shaftMesh.position.set(0,-5,0)
+    topMesh.position.set(3,-4,2)
+    rodMesh.position.set(7,0,2)
+    connectorMesh.position.set(4,-2,2)
+    connectorTMesh.position.set(6,1,2)
+
+    wheelMesh.rotateX(THREE.Math.degToRad(-90));
+    shaftMesh.rotateX(THREE.Math.degToRad(90))
+    topMesh.rotateZ(THREE.Math.degToRad(-70))
+    rodMesh.rotateZ(THREE.Math.degToRad(-10))
+    connectorMesh.rotateZ(THREE.Math.degToRad(-30))
+    connectorTMesh.rotateZ(THREE.Math.degToRad(-40))
+    return gear;
+}
+
+function createBackLandingGearR(i) {
+    var j = 4
+    if(i == 3) { j = i - 1}
+    var gear = new THREE.Object3D();
+    var wheelGeom = new THREE.CylinderGeometry(2, 2, .5, 20);
+    var wheelMesh = new THREE.Mesh(wheelGeom, jetMeshMaterials[i]);
+
+    var tireGeom = new THREE.TorusGeometry( 3, 1, 16, 30 )
+    var tireMesh = new THREE.Mesh(tireGeom, jetMeshMaterials[0])
+
+    var shaftGeom = new THREE.CylinderGeometry(1, 1, 3, 20);
+    var shaftMesh = new THREE.Mesh(shaftGeom, jetMeshMaterials[j]);
+
+    var topGeom = new THREE.CylinderGeometry(1, 1, 8, 20)
+    var topMesh = new THREE.Mesh(topGeom, jetMeshMaterials[j])
+
+    var rodGeom = new THREE.CylinderGeometry(1, 1, 8, 20)
+    var rodMesh = new THREE.Mesh(rodGeom, jetMeshMaterials[j])
+
+    var connectorGeom = new THREE.CylinderGeometry(.5, .5, 6, 20)
+    var connectorMesh = new THREE.Mesh(connectorGeom, jetMeshMaterials[5])
+
+    var connectorTGeom = new THREE.CylinderGeometry(1, 1, 4, 20)
+    var connectorTMesh = new THREE.Mesh(connectorTGeom, jetMeshMaterials[j])
+
+    gear.add(wheelMesh)
+    gear.add(tireMesh)
+    gear.add(shaftMesh)
+    gear.add(topMesh)
+    gear.add(rodMesh)
+    gear.add(connectorMesh)
+    gear.add(connectorTMesh)
+
+    wheelMesh.position.set(0,-5,2)
+    tireMesh.position.set(0,-5,2)
+    shaftMesh.position.set(0,-5,0)
+    topMesh.position.set(3,-4,-2)
+    rodMesh.position.set(7,0,-2)
+    connectorMesh.position.set(4,-2,-2)
+    connectorTMesh.position.set(6,1,-2)
+
+    wheelMesh.rotateX(THREE.Math.degToRad(-90));
+    shaftMesh.rotateX(THREE.Math.degToRad(90))
+    topMesh.rotateZ(THREE.Math.degToRad(-70))
+    rodMesh.rotateZ(THREE.Math.degToRad(-10))
+    connectorMesh.rotateZ(THREE.Math.degToRad(-30))
+    connectorTMesh.rotateZ(THREE.Math.degToRad(-40))
+    return gear;
 }
 
 function createNose(i) {
@@ -404,6 +575,21 @@ function createJetObject(i) {
     jet.add(thruster2);
     thruster2.position.set(-28,1,-7)
 
+    var tailgear1 = createBackLandingGearL(i)
+
+    jet.add(tailgear1);
+    tailgear1.position.set(-4,-12,-7)
+
+    var tailgear2 = createBackLandingGearR(i)
+
+    jet.add(tailgear2);
+    tailgear2.position.set(-4,-12,7)
+
+    var frontgear = createFrontLandingGear(i)
+
+    jet.add(frontgear);
+    frontgear.position.set(30,-8,0)
+
     var nose = createNose(i)
 
     jet.add(nose);
@@ -511,3 +697,49 @@ function play_jet_takeoff_animation(jet){
 
 
 }
+
+var gearPosition = {
+    rotation: 0,
+    y: 0
+}
+
+
+/*function playGearClosingAnimation(jet){
+
+
+    let animation_speed = 100
+    let max_animation_speed = 20
+    let animation_speed_decrement = 4
+    function anim(){
+        if (gearPosition.rotation = THREE.Math.degToRad(90)){
+            let next_point = points_on_curve[time_step + 1]
+            jet..position.set(point.x, point.y, point.z)
+            jet.lookAt(next_point.x, next_point.y, next_point.z)
+            //rotate jet to account for look at being off
+            jet.rotateY(-THREE.Math.degToRad(90));
+            time_step += 1
+            
+            animation_speed -= animation_speed_decrement
+            if (animation_speed < max_animation_speed){
+                animation_speed = max_animation_speed
+            }
+            clearInterval(animation_interval)
+            animation_interval = setInterval(anim, animation_speed)
+            console.log(animation_speed)
+        }
+        else{
+            clearInterval(animation_interval)
+        }
+
+        render();
+
+
+    }
+
+    let animation_interval = setInterval(anim, animation_speed)
+
+    
+
+
+
+}*/
