@@ -37,7 +37,7 @@
 
         var cameraParams = {
             near: 1,
-            far: 1000,
+            far: 1900,
             fov: 75,                // degrees
             aspectRatio: 700 / 500,   // from dimensions of the canvas, see CSS
             atX: 0,
@@ -313,6 +313,32 @@ void main(){
             
             setupCameraControls(); //probably a better way to fix this...
         });
+
+
+
+      //setup skybox
+      const sky_top = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Top.bmp');
+      const sky_bottom = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Bottom.bmp');
+      const sky_front = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Front.bmp');
+      const sky_back = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Back.bmp');
+      const sky_left = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Left.bmp');
+      const sky_right = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Right.bmp');
+      //create material array
+      const skybox_materials = [];
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_right, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_left, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_top, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_bottom, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_front, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_back, side: THREE.BackSide}));
+      
+
+
+      //create skybox cube
+      const skybox_geometry = new THREE.BoxGeometry(1000, 1000, 1000);
+      const skybox_cube = new THREE.Mesh(skybox_geometry, skybox_materials);
+      scene.add(skybox_cube);
+
     </script>
 
 
