@@ -250,9 +250,18 @@ void main(){
 
         play_jet_takeoff_animation(jet1)
 
+        // lighting
 
-        let bright_ambient = new THREE.AmbientLight(0xffffff, 0.8);
+        let bright_ambient = new THREE.AmbientLight(0xffffff, 1);
         scene.add(bright_ambient);
+
+        let hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+        hemiLight.color.setHSL(0.6, 1, 0.6);
+				hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+				hemiLight.position.set(300, 300, 0);
+        let helper = new THREE.HemisphereLightHelper(hemiLight);
+        scene.add(hemiLight);
+        scene.add(helper);
 
 
 
