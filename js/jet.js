@@ -506,6 +506,67 @@ var jet_takeoff_cp_list = [
     [200, 90, 0],
 ]
 
+var jet_flight1_cp_list = [
+
+    [200, 90, 0],
+    [400, 90, 300],
+    [100, 90, -300],
+    [200, 90, 350],
+]
+
+function play_animation_jet(jet, cp_list){
+    let points_on_curve = []
+    let time_step = 0;
+    createBezierCurve(cp_list, 100, points_on_curve)
+
+    //draw curve
+    let curve_geometry = createBezierCurve(cp_list, 100, points_on_curve)
+    let curve_material = new THREE.LineBasicMaterial({color: "red"});
+    let curve = new THREE.Line(curve_geometry, curve_material);
+    scene.add(curve);
+
+    //place spheres at each point control point  
+    for (let i = 0; i < cp_list.length; i++){
+        let point = cp_list[i]
+        let sphere_geometry = new THREE.SphereGeometry( 5, 82, 82 );
+        let sphere_material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+        let sphere = new THREE.Mesh( sphere_geometry, sphere_material );
+        sphere.position.set(point[0], point[1], point[2])
+        scene.add( sphere );
+    }
+
+
+    let animation_speed = 100
+    let max_animation_speed = 20
+    let animation_speed_decrement = 4
+    function anim(){
+        if (points_on_curve.length > 0 && time_step < (points_on_curve.length/2)-1){
+            let point = points_on_curve[time_step]
+            let next_point = points_on_curve[time_step + 1]
+            jet.position.set(point.x, point.y, point.z)
+            jet.lookAt(next_point.x, next_point.y, next_point.z)
+            //rotate jet to account for look at being off
+            jet.rotateY(-THREE.Math.degToRad(90));
+            time_step += 1
+            
+            animation_speed -= animation_speed_decrement
+            if (animation_speed < max_animation_speed){
+                animation_speed = max_animation_speed
+            }
+            clearInterval(animation_interval)
+            animation_interval = setInterval(anim, animation_speed)
+            console.log(animation_speed)
+        }
+        else{
+            clearInterval(animation_interval)
+        }
+        render();
+
+    }
+    let animation_interval = setInterval(anim, animation_speed)
+
+
+}
 
 function play_jet_takeoff_animation(jet){
 

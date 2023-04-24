@@ -203,7 +203,7 @@ void main(){
         var scene = new THREE.Scene();
 
 
-        var water_box_geom = new THREE.BoxGeometry(1000, 1000, 1, 800,800,1);
+        var water_box_geom = new THREE.BoxGeometry(1000, 1000, 1, 200,200,1);
 
         var water_box_mat = new THREE.ShaderMaterial({
         uniforms: {
@@ -248,8 +248,7 @@ void main(){
         jet1.scale.set(0.2, 0.2, 0.2);
         scene.add(jet1);
 
-        play_jet_takeoff_animation(jet1)
-
+        play_animation_jet(jet1, jet_flight1_cp_list)
 
         let bright_ambient = new THREE.AmbientLight(0xffffff, 0.8);
         scene.add(bright_ambient);
