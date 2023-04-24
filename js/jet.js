@@ -514,6 +514,16 @@ var jet_flight1_cp_list = [
     [-200, 90, 150],
 ]
 
+var jet_flight2_cp_list = [
+
+    [-200, 90, 150],
+    [-400, 120, 50],
+    [-100, 90, -50],
+
+    [-200, 90, -100],
+]
+
+
 function play_animation_jet(jet, cp_list, finished_callback){
     let points_on_curve = []
     let time_step = 0;
