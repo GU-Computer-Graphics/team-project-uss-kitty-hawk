@@ -509,9 +509,9 @@ var jet_takeoff_cp_list = [
 var jet_flight1_cp_list = [
 
     [200, 90, 0],
-    [400, 90, 300],
-    [100, 90, -300],
-    [200, 90, 350],
+    [400, 90, 100],
+    [100, 90, 200],
+    [-200, 90, 150],
 ]
 
 function play_animation_jet(jet, cp_list){
