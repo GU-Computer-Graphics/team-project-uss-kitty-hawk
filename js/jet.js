@@ -549,6 +549,7 @@ function play_animation_jet(jet, cp_list, finished_callback){
     let animation_speed = 100
     let max_animation_speed = 20
     let animation_speed_decrement = 4
+    animation_speed = max_animation_speed //disabling temporarily until i can figure out how to make it work with combined curves
     function anim(){
         if (points_on_curve.length > 0 && time_step < (points_on_curve.length/2)-1){
             let point = points_on_curve[time_step]
