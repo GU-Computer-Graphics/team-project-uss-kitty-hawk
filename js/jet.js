@@ -514,7 +514,7 @@ var jet_flight1_cp_list = [
     [-200, 90, 150],
 ]
 
-function play_animation_jet(jet, cp_list){
+function play_animation_jet(jet, cp_list, finished_callback){
     let points_on_curve = []
     let time_step = 0;
     createBezierCurve(cp_list, 100, points_on_curve)
@@ -559,15 +559,34 @@ function play_animation_jet(jet, cp_list){
         }
         else{
             clearInterval(animation_interval)
+            finished_callback()
         }
         render();
 
     }
     let animation_interval = setInterval(anim, animation_speed)
+    return animation_interval
+
+}
+
+
+function play_animation_list_jet(jet, list){
+
+
+    play_animation_jet(jet, list[0], function(){
+
+        let new_list = list.slice(1)
+        if (new_list.length > 0){
+            play_animation_list_jet(jet, new_list)
+        }
+
+    })
 
 
 }
 
+
+//DONT USE deprecated
 function play_jet_takeoff_animation(jet){
 
     let points_on_curve = []
