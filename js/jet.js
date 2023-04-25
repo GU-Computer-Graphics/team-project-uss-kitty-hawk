@@ -29,6 +29,20 @@ var jetMeshMaterials = [
         side: THREE.DoubleSide,
         wireframe: true
     }),
+    new THREE.MeshPhongMaterial({
+        color: new THREE.Color("white"),
+        specular: new THREE.Color("white"),
+        shininess: 10,
+        flatShading: THREE.FlatShading,
+        side: THREE.DoubleSide
+    }),
+    new THREE.MeshPhongMaterial({
+        color: new THREE.Color("silver"),
+        specular: new THREE.Color("white"),
+        shininess: 10,
+        flatShading: THREE.FlatShading,
+        side: THREE.DoubleSide
+    }),
 
 ]
 
