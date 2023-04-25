@@ -719,6 +719,16 @@ var jet_flight2_cp_list = [
 
     [-200, 120, -100],
 ]
+
+var jet_flight3_cp_list = [
+    [-200, 120, -100],
+    [0, 140, 0],
+    [100, 140, 0],
+    [200, 120, 0],
+    
+
+]
+
     
 
 function play_animation_jet(jet, cp_list, finished_callback){
