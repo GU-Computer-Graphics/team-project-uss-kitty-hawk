@@ -29,6 +29,20 @@ var jetMeshMaterials = [
         side: THREE.DoubleSide,
         wireframe: true
     }),
+    new THREE.MeshPhongMaterial({
+        color: new THREE.Color("white"),
+        specular: new THREE.Color("white"),
+        shininess: 10,
+        flatShading: THREE.FlatShading,
+        side: THREE.DoubleSide
+    }),
+    new THREE.MeshPhongMaterial({
+        color: new THREE.Color("silver"),
+        specular: new THREE.Color("white"),
+        shininess: 10,
+        flatShading: THREE.FlatShading,
+        side: THREE.DoubleSide
+    }),
 
 ]
 
@@ -168,7 +182,7 @@ function createtailfin() {
 }
 
 function createIntake() {
-    const intakeSize = { w: 10, h: 20, l: 30 };
+    const intakeSize = { w: 10, h: 10, l: 10 };
     
     const intakeGeom = new THREE.BufferGeometry();
   
@@ -294,41 +308,41 @@ function createNose(i) {
 function createMainBody() {
     var bodyGeom = new THREE.BufferGeometry();
 
+    const vertices = new Float32Array([
+        -bodySize.w / 5, 0, -bodySize.l / 1.2,
+        bodySize.w / 5, 0, -bodySize.l,
+        bodySize.w / 3.5, 0, -bodySize.l / 1.1,
+        bodySize.w / 2.3, 0, -bodySize.l / 1.9,
+        bodySize.w / 2, 0, -bodySize.l / 4,
+        bodySize.w / 2, 0, bodySize.l / 4,
+        bodySize.w / 2.3, 0, bodySize.l / 1.9, //6x
+        bodySize.w / 3.5, 0, bodySize.l / 1.1, //7x
+        bodySize.w / 5, 0, bodySize.l, //8x
+        -bodySize.w / 5, 0, bodySize.l / 1.2, //9x
+        -bodySize.w / 5, 0, bodySize.l / 4, //10x
+        -bodySize.w / 2, 0, bodySize.l / 4, //11x
+        -bodySize.w / 2, 0, -bodySize.l / 4, //12x
+        -bodySize.w / 5, 0, -bodySize.l / 4, //13x
 
-    let points = [];
-    points.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 1.2)); //0x
-    points.push(new THREE.Vector3(bodySize.w / 5, 0, -bodySize.l)); //1x
-    points.push(new THREE.Vector3(bodySize.w / 3.5, 0, -bodySize.l / 1.1)); //2x
-    points.push(new THREE.Vector3(bodySize.w / 2.3, 0, -bodySize.l / 1.9)); //3x
-    points.push(new THREE.Vector3(bodySize.w / 2, 0, -bodySize.l / 4)); //4x
-    points.push(new THREE.Vector3(bodySize.w / 2, 0, bodySize.l / 4)); //5x
-    points.push(new THREE.Vector3(bodySize.w / 2.3, 0, bodySize.l / 1.9)); //6x
-    points.push(new THREE.Vector3(bodySize.w / 3.5, 0, bodySize.l / 1.1)); //7x
-    points.push(new THREE.Vector3(bodySize.w / 5, 0, bodySize.l)); //8x
-    points.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 1.2)); //9x
-    points.push(new THREE.Vector3(-bodySize.w / 5, 0, bodySize.l / 4)); //10x
-    points.push(new THREE.Vector3(-bodySize.w / 2, 0, bodySize.l / 4)); //11x
-    points.push(new THREE.Vector3(-bodySize.w / 2, 0, -bodySize.l / 4)); //12x
-    points.push(new THREE.Vector3(-bodySize.w / 5, 0, -bodySize.l / 4)); //13x
-
-    //vertices on top
-    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 1.2 + bodySize.d)); //14x
-    points.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, -bodySize.l + bodySize.d)); //15x
-    points.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, -bodySize.l / 1.1 + bodySize.d)); //16x
-    points.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, -bodySize.l / 1.9 + bodySize.d)); //17x
-    points.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, -bodySize.l / 4 + bodySize.d)); //18x
-    points.push(new THREE.Vector3(bodySize.w / 2 - bodySize.d, bodySize.h, bodySize.l / 4 - bodySize.d)); //19x
-    points.push(new THREE.Vector3(bodySize.w / 2.3 - bodySize.d, bodySize.h, bodySize.l / 1.9 - bodySize.d)); //20x
-    points.push(new THREE.Vector3(bodySize.w / 3.5 - bodySize.d, bodySize.h, bodySize.l / 1.1 - bodySize.d)); //21x
-    points.push(new THREE.Vector3(bodySize.w / 5 - bodySize.d, bodySize.h, bodySize.l - bodySize.d)); //22x
-    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 1.2 - bodySize.d)); //23x
-    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, bodySize.l / 4)); //24x
-    points.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, bodySize.l / 4)); //25x
-    points.push(new THREE.Vector3(-bodySize.w / 2, bodySize.h, -bodySize.l / 4)); //26x
-    points.push(new THREE.Vector3(-bodySize.w / 5, bodySize.h, -bodySize.l / 4)); //27x
-
+        //vertices on top
+        -bodySize.w / 5, bodySize.h, -bodySize.l / 1.2 + bodySize.d, //14x
+        bodySize.w / 5 - bodySize.d, bodySize.h, -bodySize.l + bodySize.d, //15x
+        bodySize.w / 3.5 - bodySize.d, bodySize.h, -bodySize.l / 1.1 + bodySize.d, //16x
+        bodySize.w / 2.3 - bodySize.d, bodySize.h, -bodySize.l / 1.9 + bodySize.d, //17x
+        bodySize.w / 2 - bodySize.d, bodySize.h, -bodySize.l / 4 + bodySize.d, //18x
+        bodySize.w / 2 - bodySize.d, bodySize.h, bodySize.l / 4 - bodySize.d, //19x
+        bodySize.w / 2.3 - bodySize.d, bodySize.h, bodySize.l / 1.9 - bodySize.d, //20x
+        bodySize.w / 3.5 - bodySize.d, bodySize.h, bodySize.l / 1.1 - bodySize.d, //21x
+        bodySize.w / 5 - bodySize.d, bodySize.h, bodySize.l - bodySize.d, //22x
+        -bodySize.w / 5, bodySize.h, bodySize.l / 1.2 - bodySize.d, //23x
+        -bodySize.w / 5, bodySize.h, bodySize.l / 4, //24x
+        -bodySize.w / 2, bodySize.h, bodySize.l / 4, //25x
+        -bodySize.w / 2, bodySize.h, -bodySize.l / 4, //26x
+        -bodySize.w / 5, bodySize.h, -bodySize.l / 4, //27x
+    ]);
+    bodyGeom.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
    
-    bodyGeom.setIndex([
+    indices = new Uint16Array([
         4, 5, 3,
         3, 5, 6,
         3, 6, 2,
@@ -380,9 +394,168 @@ function createMainBody() {
 
     ]);
 
-    bodyGeom.computeFaceNormals();
+    bodyGeom.setIndex(new THREE.BufferAttribute(indices, 1));
+
+    bodyGeom.computeVertexNormals();
 
     return bodyGeom;
+}
+
+function createFrontLandingGear(i) {
+    var j = 4
+    if(i == 3) { j = i - 1}
+    var gear = new THREE.Object3D();
+    var wheelGeom = new THREE.CylinderGeometry(2, 2, .5, 20);
+    var wheelMesh = new THREE.Mesh(wheelGeom, jetMeshMaterials[i]);
+    var wheel2Mesh = new THREE.Mesh(wheelGeom, jetMeshMaterials[i]);
+
+    var tireGeom = new THREE.TorusGeometry( 3, 1, 16, 30 )
+    var tireMesh = new THREE.Mesh(tireGeom, jetMeshMaterials[0])
+    var tire2Mesh  = new THREE.Mesh(tireGeom, jetMeshMaterials[0])
+
+    var shaftGeom = new THREE.CylinderGeometry(1, 1, 5, 20);
+    var shaftMesh = new THREE.Mesh(shaftGeom, jetMeshMaterials[j]);
+
+    var topGeom = new THREE.CylinderGeometry(1.5, 1.5, 8, 20)
+    var topMesh = new THREE.Mesh(topGeom, jetMeshMaterials[j])
+
+    var rodGeom = new THREE.CylinderGeometry(1, 1, 20, 20)
+    var rodMesh = new THREE.Mesh(rodGeom, jetMeshMaterials[j])
+
+    var connectorGeom = new THREE.CylinderGeometry(.5, .5, 7, 20)
+    var connectorMesh = new THREE.Mesh(connectorGeom, jetMeshMaterials[5])
+
+    var connectorTGeom = new THREE.CylinderGeometry(1, 1, 4, 20)
+    var connectorTMesh = new THREE.Mesh(connectorTGeom, jetMeshMaterials[j])
+
+    gear.add(wheelMesh)
+    gear.add(wheel2Mesh)
+    gear.add(tireMesh)
+    gear.add(tire2Mesh)
+    gear.add(shaftMesh)
+    gear.add(topMesh)
+    gear.add(rodMesh)
+    gear.add(connectorMesh)
+    gear.add(connectorTMesh)
+
+    wheelMesh.position.set(0,-10,-3)
+    tireMesh.position.set(0,-10,-3)
+    wheel2Mesh.position.set(0,-10,3)
+    tire2Mesh.position.set(0,-10,3)
+    shaftMesh.position.set(0,-10,0)
+    topMesh.position.set(0,-4,0)
+    rodMesh.position.set(0,0,0)
+    connectorMesh.position.set(-3,-2,0)
+    connectorTMesh.position.set(-5,0,0)
+
+    wheelMesh.rotateX(THREE.Math.degToRad(-90));
+    wheel2Mesh.rotateX(THREE.Math.degToRad(-90));
+    shaftMesh.rotateX(THREE.Math.degToRad(90))
+    //topMesh.rotateZ(THREE.Math.degToRad(-70))
+    //rodMesh.rotateZ(THREE.Math.degToRad(-10))
+    connectorMesh.rotateZ(THREE.Math.degToRad(40))
+    connectorTMesh.rotateZ(THREE.Math.degToRad(40))
+    return gear;
+}
+
+function createBackLandingGearL(i) {
+    var j = 4
+    if(i == 3) { j = i - 1}
+    var gear = new THREE.Object3D();
+    var wheelGeom = new THREE.CylinderGeometry(2, 2, .5, 20);
+    var wheelMesh = new THREE.Mesh(wheelGeom, jetMeshMaterials[i]);
+
+    var tireGeom = new THREE.TorusGeometry( 3, 1, 16, 30 )
+    var tireMesh = new THREE.Mesh(tireGeom, jetMeshMaterials[0])
+
+    var shaftGeom = new THREE.CylinderGeometry(1, 1, 3, 20);
+    var shaftMesh = new THREE.Mesh(shaftGeom, jetMeshMaterials[j]);
+
+    var topGeom = new THREE.CylinderGeometry(1, 1, 8, 20)
+    var topMesh = new THREE.Mesh(topGeom, jetMeshMaterials[j])
+
+    var rodGeom = new THREE.CylinderGeometry(1, 1, 8, 20)
+    var rodMesh = new THREE.Mesh(rodGeom, jetMeshMaterials[j])
+
+    var connectorGeom = new THREE.CylinderGeometry(.5, .5, 6, 20)
+    var connectorMesh = new THREE.Mesh(connectorGeom, jetMeshMaterials[5])
+
+    var connectorTGeom = new THREE.CylinderGeometry(1, 1, 4, 20)
+    var connectorTMesh = new THREE.Mesh(connectorTGeom, jetMeshMaterials[j])
+
+    gear.add(wheelMesh)
+    gear.add(tireMesh)
+    gear.add(shaftMesh)
+    gear.add(topMesh)
+    gear.add(rodMesh)
+    gear.add(connectorMesh)
+    gear.add(connectorTMesh)
+
+    wheelMesh.position.set(0,-5,-2)
+    tireMesh.position.set(0,-5,-2)
+    shaftMesh.position.set(0,-5,0)
+    topMesh.position.set(3,-4,2)
+    rodMesh.position.set(7,0,2)
+    connectorMesh.position.set(4,-2,2)
+    connectorTMesh.position.set(6,1,2)
+
+    wheelMesh.rotateX(THREE.Math.degToRad(-90));
+    shaftMesh.rotateX(THREE.Math.degToRad(90))
+    topMesh.rotateZ(THREE.Math.degToRad(-70))
+    rodMesh.rotateZ(THREE.Math.degToRad(-10))
+    connectorMesh.rotateZ(THREE.Math.degToRad(-30))
+    connectorTMesh.rotateZ(THREE.Math.degToRad(-40))
+    return gear;
+}
+
+function createBackLandingGearR(i) {
+    var j = 4
+    if(i == 3) { j = i - 1}
+    var gear = new THREE.Object3D();
+    var wheelGeom = new THREE.CylinderGeometry(2, 2, .5, 20);
+    var wheelMesh = new THREE.Mesh(wheelGeom, jetMeshMaterials[i]);
+
+    var tireGeom = new THREE.TorusGeometry( 3, 1, 16, 30 )
+    var tireMesh = new THREE.Mesh(tireGeom, jetMeshMaterials[0])
+
+    var shaftGeom = new THREE.CylinderGeometry(1, 1, 3, 20);
+    var shaftMesh = new THREE.Mesh(shaftGeom, jetMeshMaterials[j]);
+
+    var topGeom = new THREE.CylinderGeometry(1, 1, 8, 20)
+    var topMesh = new THREE.Mesh(topGeom, jetMeshMaterials[j])
+
+    var rodGeom = new THREE.CylinderGeometry(1, 1, 8, 20)
+    var rodMesh = new THREE.Mesh(rodGeom, jetMeshMaterials[j])
+
+    var connectorGeom = new THREE.CylinderGeometry(.5, .5, 6, 20)
+    var connectorMesh = new THREE.Mesh(connectorGeom, jetMeshMaterials[5])
+
+    var connectorTGeom = new THREE.CylinderGeometry(1, 1, 4, 20)
+    var connectorTMesh = new THREE.Mesh(connectorTGeom, jetMeshMaterials[j])
+
+    gear.add(wheelMesh)
+    gear.add(tireMesh)
+    gear.add(shaftMesh)
+    gear.add(topMesh)
+    gear.add(rodMesh)
+    gear.add(connectorMesh)
+    gear.add(connectorTMesh)
+
+    wheelMesh.position.set(0,-5,2)
+    tireMesh.position.set(0,-5,2)
+    shaftMesh.position.set(0,-5,0)
+    topMesh.position.set(3,-4,-2)
+    rodMesh.position.set(7,0,-2)
+    connectorMesh.position.set(4,-2,-2)
+    connectorTMesh.position.set(6,1,-2)
+
+    wheelMesh.rotateX(THREE.Math.degToRad(-90));
+    shaftMesh.rotateX(THREE.Math.degToRad(90))
+    topMesh.rotateZ(THREE.Math.degToRad(-70))
+    rodMesh.rotateZ(THREE.Math.degToRad(-10))
+    connectorMesh.rotateZ(THREE.Math.degToRad(-30))
+    connectorTMesh.rotateZ(THREE.Math.degToRad(-40))
+    return gear;
 }
 
 
@@ -447,6 +620,24 @@ function createJetObject(i) {
     jet.add(thruster2);
     thruster2.position.set(-28,1,-7)
 
+    var tailgear1 = createBackLandingGearL(i)
+    tailgear1.name = `tailgear1${i}`
+
+    jet.add(tailgear1);
+    tailgear1.position.set(-4,-12,-7)
+
+    var tailgear2 = createBackLandingGearR(i)
+    tailgear2.name = `tailgear2${i}`
+
+    jet.add(tailgear2);
+    tailgear2.position.set(-4,-12,7)
+
+    var frontgear = createFrontLandingGear(i)
+    frontgear.name = `frontgear${i}`
+
+    jet.add(frontgear);
+    frontgear.position.set(30,-8,0)
+
     var nose = createNose(i)
 
     jet.add(nose);
@@ -463,7 +654,9 @@ function createJetObject(i) {
 function createJet() {
     var jetFull = new THREE.Object3D();
     jet = createJetObject(1);
+    jet.name = "main"
     jetoutline = createJetObject(3);
+    jetoutline.name = "outline"
     jetFull.add(jet)
     jetFull.add(jetoutline)
     return jetFull
@@ -498,6 +691,8 @@ function createBezierCurve(cpList, steps, points_on_curve) {
     return geometry;
 }
 
+var gearRotation = 0;
+
 
 var jet_takeoff_cp_list = [
     [0, 20, 0],
@@ -507,6 +702,7 @@ var jet_takeoff_cp_list = [
 ]
 
 var jet_flight1_cp_list = [
+
 
     [200, 90, 0],
     [400, 60, 100],
@@ -621,6 +817,29 @@ function play_jet_takeoff_animation(jet){
             jet.lookAt(next_point.x, next_point.y, next_point.z)
             //rotate jet to account for look at being off
             jet.rotateY(-THREE.Math.degToRad(90));
+
+            if(gearRotation < 90 && time_step > 5) {
+                jet.getObjectByName("main").getObjectByName("frontgear1").rotateZ(THREE.Math.degToRad(5))
+                jet.getObjectByName("main").getObjectByName("tailgear11").rotateZ(-THREE.Math.degToRad(5))
+                jet.getObjectByName("main").getObjectByName("tailgear21").rotateZ(-THREE.Math.degToRad(5))
+                jet.getObjectByName("main").getObjectByName("frontgear1").translateY(.5)
+                jet.getObjectByName("main").getObjectByName("tailgear11").translateY(.5)
+                jet.getObjectByName("main").getObjectByName("tailgear21").translateY(.5)
+                jet.getObjectByName("main").getObjectByName("frontgear1").translateX(.5)
+                jet.getObjectByName("main").getObjectByName("tailgear11").translateX(-.5)
+                jet.getObjectByName("main").getObjectByName("tailgear21").translateX(-.5)
+
+                jet.getObjectByName("outline").getObjectByName("frontgear3").rotateZ(THREE.Math.degToRad(5))
+                jet.getObjectByName("outline").getObjectByName("tailgear13").rotateZ(-THREE.Math.degToRad(5))
+                jet.getObjectByName("outline").getObjectByName("tailgear23").rotateZ(-THREE.Math.degToRad(5))
+                jet.getObjectByName("outline").getObjectByName("frontgear3").translateY(.5)
+                jet.getObjectByName("outline").getObjectByName("tailgear13").translateY(.5)
+                jet.getObjectByName("outline").getObjectByName("tailgear23").translateY(.5)
+                jet.getObjectByName("outline").getObjectByName("frontgear3").translateX(.5)
+                jet.getObjectByName("outline").getObjectByName("tailgear13").translateX(-.5)
+                jet.getObjectByName("outline").getObjectByName("tailgear23").translateX(-.5)
+                gearRotation += 5 
+            }
             time_step += 1
             
             animation_speed -= animation_speed_decrement

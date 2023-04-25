@@ -44,8 +44,8 @@
             atY: 0,
             atZ: 0,
             eyeX: 0,
-            eyeY: 60,
-            eyeZ: -70,
+            eyeY: 20,
+            eyeZ: -150,
             upX: 0,
             upY: 1,
             upZ: 0
@@ -250,10 +250,20 @@ void main(){
 
         let animation_list_jet1 = [jet_takeoff_cp_list, jet_flight1_cp_list, jet_flight2_cp_list]
 
+
         play_animation_list_jet(jet1, animation_list_jet1)
 
-        let bright_ambient = new THREE.AmbientLight(0xffffff, 0.8);
+        // lighting
+        let bright_ambient = new THREE.AmbientLight(0xffffff, 1);
         scene.add(bright_ambient);
+
+        let hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+        hemiLight.color.setHSL(0.6, 1, 0.6);
+				hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+				hemiLight.position.set(300, 300, 0);
+        let helper = new THREE.HemisphereLightHelper(hemiLight);
+        scene.add(hemiLight);
+        scene.add(helper);
 
 
 
@@ -262,9 +272,9 @@ void main(){
          loader.crossOrigin = true;
          loader.load( 'cv-assets/USS_Kitty_Hawk.glb', function(data) {
              let cv = data.scene;
-             cv.position.set(0, 0, -0.75);
+             cv.position.set(0, -6, -0.75);
              cv.rotation.y = Math.PI / -2;
-             cv.scale.set(7, 7, 7);
+             cv.scale.set(15.5, 15.5, 15.5);
              scene.add(cv);
          });
 
