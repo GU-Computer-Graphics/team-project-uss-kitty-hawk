@@ -714,11 +714,12 @@ var jet_flight2_cp_list = [
 
     [-200, 120, 150],
     [-400, 140, 50],
-    [-100, 120, -50],
+    [-400, 140, -50],
+
 
     [-200, 120, -100],
 ]
-
+    
 
 function play_animation_jet(jet, cp_list, finished_callback){
     let points_on_curve = []
