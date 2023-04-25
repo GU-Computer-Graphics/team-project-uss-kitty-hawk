@@ -249,9 +249,9 @@ void main(){
         scene.add(jet1);
 
         let animation_list_jet1 = [jet_takeoff_cp_list, jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list]
+        let animation_list_jet1_no_takeoff = [jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list]
 
-
-        play_animation_list_jet(jet1, animation_list_jet1)
+        play_animation_list_jet(jet1, animation_list_jet1, animation_list_jet1_no_takeoff)
 
         // lighting
         let bright_ambient = new THREE.AmbientLight(0xffffff, 1);
