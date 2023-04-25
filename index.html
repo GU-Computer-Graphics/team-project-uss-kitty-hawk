@@ -270,9 +270,9 @@ void main(){
          loader.crossOrigin = true;
          loader.load( 'cv-assets/USS_Kitty_Hawk.glb', function(data) {
              let cv = data.scene;
-             cv.position.set(0, 0, -0.75);
+             cv.position.set(0, -6, -0.75);
              cv.rotation.y = Math.PI / -2;
-             cv.scale.set(7, 7, 7);
+             cv.scale.set(15.5, 15.5, 15.5);
              scene.add(cv);
          });
 
