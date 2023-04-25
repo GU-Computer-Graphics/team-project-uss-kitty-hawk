@@ -734,10 +734,10 @@ var jet_flight3_cp_list = [
 function play_animation_jet(jet, cp_list, finished_callback){
     let points_on_curve = []
     let time_step = 0;
-    createBezierCurve(cp_list, 100, points_on_curve)
+    createBezierCurve(cp_list, 200, points_on_curve)
 
     //draw curve
-    let curve_geometry = createBezierCurve(cp_list, 100, points_on_curve)
+    let curve_geometry = createBezierCurve(cp_list, 200, points_on_curve)
     let curve_material = new THREE.LineBasicMaterial({color: "red"});
     let curve = new THREE.Line(curve_geometry, curve_material);
     //scene.add(curve);
@@ -754,7 +754,7 @@ function play_animation_jet(jet, cp_list, finished_callback){
 
 
     let animation_speed = 100
-    let max_animation_speed = 20
+    let max_animation_speed = 5
     let animation_speed_decrement = 4
     animation_speed = max_animation_speed //disabling temporarily until i can figure out how to make it work with combined curves
     function anim(){
