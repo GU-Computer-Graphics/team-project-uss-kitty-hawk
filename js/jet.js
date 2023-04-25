@@ -805,6 +805,42 @@ function play_animation_list_jet(jet, list, const_list){
 
 }
 
+function play_jet_retract_gear(jet){
+
+
+    let time_increment = 0
+    let time_step = 0
+    let gear_interval = setInterval(function(){
+        if(gearRotation < 90 && time_step > 100) {
+            jet.getObjectByName("main").getObjectByName("frontgear1").rotateZ(THREE.Math.degToRad(5))
+            jet.getObjectByName("main").getObjectByName("tailgear11").rotateZ(-THREE.Math.degToRad(5))
+            jet.getObjectByName("main").getObjectByName("tailgear21").rotateZ(-THREE.Math.degToRad(5))
+            jet.getObjectByName("main").getObjectByName("frontgear1").translateY(.5)
+            jet.getObjectByName("main").getObjectByName("tailgear11").translateY(.5)
+            jet.getObjectByName("main").getObjectByName("tailgear21").translateY(.5)
+            jet.getObjectByName("main").getObjectByName("frontgear1").translateX(.5)
+            jet.getObjectByName("main").getObjectByName("tailgear11").translateX(-.5)
+            jet.getObjectByName("main").getObjectByName("tailgear21").translateX(-.5)
+    
+            jet.getObjectByName("outline").getObjectByName("frontgear3").rotateZ(THREE.Math.degToRad(5))
+            jet.getObjectByName("outline").getObjectByName("tailgear13").rotateZ(-THREE.Math.degToRad(5))
+            jet.getObjectByName("outline").getObjectByName("tailgear23").rotateZ(-THREE.Math.degToRad(5))
+            jet.getObjectByName("outline").getObjectByName("frontgear3").translateY(.5)
+            jet.getObjectByName("outline").getObjectByName("tailgear13").translateY(.5)
+            jet.getObjectByName("outline").getObjectByName("tailgear23").translateY(.5)
+            jet.getObjectByName("outline").getObjectByName("frontgear3").translateX(.5)
+            jet.getObjectByName("outline").getObjectByName("tailgear13").translateX(-.5)
+            jet.getObjectByName("outline").getObjectByName("tailgear23").translateX(-.5)
+            gearRotation += 5 
+
+        }
+        time_step += 1
+
+    }, 10)
+
+
+}
+
 
 //DONT USE deprecated
 function play_jet_takeoff_animation(jet){
@@ -831,28 +867,6 @@ function play_jet_takeoff_animation(jet){
             //rotate jet to account for look at being off
             jet.rotateY(-THREE.Math.degToRad(90));
 
-            if(gearRotation < 90 && time_step > 5) {
-                jet.getObjectByName("main").getObjectByName("frontgear1").rotateZ(THREE.Math.degToRad(5))
-                jet.getObjectByName("main").getObjectByName("tailgear11").rotateZ(-THREE.Math.degToRad(5))
-                jet.getObjectByName("main").getObjectByName("tailgear21").rotateZ(-THREE.Math.degToRad(5))
-                jet.getObjectByName("main").getObjectByName("frontgear1").translateY(.5)
-                jet.getObjectByName("main").getObjectByName("tailgear11").translateY(.5)
-                jet.getObjectByName("main").getObjectByName("tailgear21").translateY(.5)
-                jet.getObjectByName("main").getObjectByName("frontgear1").translateX(.5)
-                jet.getObjectByName("main").getObjectByName("tailgear11").translateX(-.5)
-                jet.getObjectByName("main").getObjectByName("tailgear21").translateX(-.5)
-
-                jet.getObjectByName("outline").getObjectByName("frontgear3").rotateZ(THREE.Math.degToRad(5))
-                jet.getObjectByName("outline").getObjectByName("tailgear13").rotateZ(-THREE.Math.degToRad(5))
-                jet.getObjectByName("outline").getObjectByName("tailgear23").rotateZ(-THREE.Math.degToRad(5))
-                jet.getObjectByName("outline").getObjectByName("frontgear3").translateY(.5)
-                jet.getObjectByName("outline").getObjectByName("tailgear13").translateY(.5)
-                jet.getObjectByName("outline").getObjectByName("tailgear23").translateY(.5)
-                jet.getObjectByName("outline").getObjectByName("frontgear3").translateX(.5)
-                jet.getObjectByName("outline").getObjectByName("tailgear13").translateX(-.5)
-                jet.getObjectByName("outline").getObjectByName("tailgear23").translateX(-.5)
-                gearRotation += 5 
-            }
             time_step += 1
             
             animation_speed -= animation_speed_decrement
