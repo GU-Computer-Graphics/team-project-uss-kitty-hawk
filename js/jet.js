@@ -729,6 +729,22 @@ var jet_flight3_cp_list = [
 
 ]
 
+let jet_flight_animation = {
+    cp_list: [jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list],
+    next_anim_list: jet_flight_animation,
+    weight: 1,
+}
+
+let jet_take_off_animation = {
+    cp_list: [jet_takeoff_cp_list, jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list],
+    next_anim_list: null,
+    weight: 1,
+}
+
+
+function play_complex_animation_jet(jet, initial_anim_obj){
+}
+
     
 
 function play_animation_jet(jet, cp_list, finished_callback){
@@ -788,17 +804,16 @@ function play_animation_jet(jet, cp_list, finished_callback){
 }
 
 
-function play_animation_list_jet(jet, list, const_list){
+function play_animation_list_jet(jet, list){
 
 
     play_animation_jet(jet, list[0], function(){
 
         let new_list = list.slice(1)
         if (new_list.length > 0){
-            play_animation_list_jet(jet, new_list, const_list)
-        }else{
-            play_animation_list_jet(jet, const_list, const_list)
+            play_animation_list_jet(jet, new_list)
         }
+
 
     })
 
