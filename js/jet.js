@@ -743,7 +743,7 @@ let jet_flight_animation = {
 
 let jet_take_off_animation = {
     cp_list: [jet_takeoff_cp_list],
-    next_anim_list: jet_flight_animation,
+    next_anim_list: [jet_flight_animation],
     weight: 1,
 }
 
@@ -753,12 +753,19 @@ function play_complex_animation_jet(jet, initial_anim_obj){
     let next_anim_list = initial_anim_obj.next_anim_list
     let weight = initial_anim_obj.weight
 
+    let next_animation = null
+    if(next_anim_list != null){
+        //get random next animation
+        let index = Math.floor(Math.random() * next_anim_list.length)
+        next_animation = next_anim_list[index]
+    }
+
+
     if(anim_list.length != 0){
 
         play_animation_list_jet(jet, anim_list, ()=>{
             if (next_anim_list != null){
-
-                play_complex_animation_jet(jet, next_anim_list)
+                play_complex_animation_jet(jet, next_animation)
             }else{
                 play_complex_animation_jet(jet, initial_anim_obj)
             }
