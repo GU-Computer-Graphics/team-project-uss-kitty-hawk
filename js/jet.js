@@ -757,14 +757,16 @@ function play_complex_animation_jet(jet, initial_anim_obj){
     if(next_anim_list != null){
         //get random next animation
         let index = Math.floor(Math.random() * next_anim_list.length)
+        console.log(index)
         next_animation = next_anim_list[index]
     }
+
 
 
     if(anim_list.length != 0){
 
         play_animation_list_jet(jet, anim_list, ()=>{
-            if (next_anim_list != null){
+            if (next_animation != null){
                 play_complex_animation_jet(jet, next_animation)
             }else{
                 play_complex_animation_jet(jet, initial_anim_obj)
@@ -772,6 +774,7 @@ function play_complex_animation_jet(jet, initial_anim_obj){
 
         })
     }
+
 
 }
 
