@@ -92,6 +92,18 @@
 <body>
 
     <h1>Aircraft Carrier Demo</h1>
+    <p>
+      controls:
+    </p>
+    <p>
+        "t" to have the jet takeoff
+    </p>
+    <p>
+        "l" to land
+    </p>
+    <p>
+      "f" to have the camera map to following the jet in air.
+  </p>
 
     <script>
 
@@ -251,8 +263,24 @@ void main(){
         let animation_list_jet1 = [jet_takeoff_cp_list, jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list]
         let animation_list_jet1_no_takeoff = [jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list]
 
-        play_animation_list_jet(jet1, animation_list_jet1, animation_list_jet1_no_takeoff)
-        play_jet_retract_gear(jet1)
+        var cameraFollowJet = false;
+        document.addEventListener("keypress", (event) => {
+            const key = event.key;
+            // console.log("key pressed was " + key);
+            switch (key) {
+                case "f":
+                    cameraFollowJet = !cameraFollowJet
+                    break;
+                case "t":
+                play_animation_list_jet(jet1, animation_list_jet1, animation_list_jet1_no_takeoff)
+                play_jet_retract_gear(jet1)
+                    break;
+                default:
+                    break;
+            }
+            setupCameraControls();
+
+        });
         // lighting
         let bright_ambient = new THREE.AmbientLight(0xffffff, 1);
         scene.add(bright_ambient);
