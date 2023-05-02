@@ -92,7 +92,7 @@
 <body>
 
     <h1>Aircraft Carrier Demo</h1>
-    <p>
+    <!--<p>
       controls:
     </p>
     <p>
@@ -103,7 +103,7 @@
     </p>
     <p>
       "f" to have the camera map to following the jet in air.
-  </p>
+  </p> -->
 
     <script>
 
@@ -215,7 +215,7 @@ void main(){
         var scene = new THREE.Scene();
 
 
-        var water_box_geom = new THREE.PlaneGeometry(1300, 1300, 600, 600);
+        var water_box_geom = new THREE.PlaneGeometry(1300, 1300, 100, 100);
 
         var water_box_mat = new THREE.ShaderMaterial({
         uniforms: {
@@ -269,7 +269,7 @@ void main(){
             // console.log("key pressed was " + key);
             switch (key) {
                 case "f":
-                    cameraFollowJet = !cameraFollowJet
+                    updateCam(jet1)
                     break;
                 case "t":
                 play_animation_list_jet(jet1, animation_list_jet1, animation_list_jet1_no_takeoff)

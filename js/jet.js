@@ -43,6 +43,12 @@ var jetMeshMaterials = [
         flatShading: THREE.FlatShading,
         side: THREE.DoubleSide
     }),
+    new THREE.MeshPhongMaterial({
+        color: new THREE.Color("black"),
+        specular: new THREE.Color("blue"),
+        shininess: 1,
+        flatShading: THREE.FlatShading,
+    }),
 
 ]
 
@@ -249,6 +255,7 @@ function createNose(i) {
     var NoseColomn = new THREE.Object3D();
     var shaftGeom = new THREE.CylinderGeometry(5, 5, 70, 20);
     var shaftMesh = new THREE.Mesh(shaftGeom, jetMeshMaterials[i]);
+    NoseColomn.name = `nose${i}`
 
     var curve = new THREE.EllipseCurve(
         0,  0,            // ax, aY
@@ -284,7 +291,8 @@ function createNose(i) {
 
     points = curve.getPoints( 50 );
     var glassGeom = new THREE.LatheGeometry( points );
-    var glassMesh = new THREE.Mesh(glassGeom, jetMeshMaterials[0]);
+    var glassMesh = new THREE.Mesh(glassGeom, jetMeshMaterials[6]);
+    glassMesh.name = `glass${i}`
 
 
     NoseColomn.add(shaftMesh)
@@ -729,7 +737,10 @@ var jet_flight3_cp_list = [
 
 ]
 
-    
+var cameraFollowJet = false;
+function updateCam(jet) {
+    cameraFollowJet = !cameraFollowJet
+}
 
 function play_animation_jet(jet, cp_list, finished_callback){
     let points_on_curve = []
@@ -770,6 +781,12 @@ function play_animation_jet(jet, cp_list, finished_callback){
             animation_speed -= animation_speed_decrement
             if (animation_speed < max_animation_speed){
                 animation_speed = max_animation_speed
+            }
+            if(cameraFollowJet) {
+                cameraParams.eyeX = point.x
+                cameraParams.eyeY = point.y + 3
+                cameraParams.eyeZ = point.z 
+                redoCamera()
             }
             clearInterval(animation_interval)
             animation_interval = setInterval(anim, animation_speed)
