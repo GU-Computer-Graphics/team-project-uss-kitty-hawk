@@ -729,6 +729,15 @@ var jet_flight3_cp_list = [
 
 ]
 
+var jet_trick1_cp_list = [
+    [200, 120, 0],
+    [200, 400, 0],
+    [400, 140, 200],
+    [400, 120, 150],
+]
+
+
+
 let jet_stop_animation = {
     cp_list: [],
     next_anim_list: null,
@@ -744,6 +753,18 @@ let jet_flight_animation = {
 let jet_take_off_animation = {
     cp_list: [jet_takeoff_cp_list],
     next_anim_list: [jet_flight_animation],
+    weight: 1,
+}
+
+let jet_trick1_animation = {
+    cp_list: [jet_trick1_cp_list],
+    next_anim_list: [jet_flight_animation],
+    weight: 1,
+}
+
+let debug_animation = {
+    cp_list: [jet_takeoff_cp_list],
+    next_anim_list: [jet_trick1_animation],
     weight: 1,
 }
 
@@ -789,7 +810,7 @@ function play_animation_jet(jet, cp_list, finished_callback){
     let curve_geometry = createBezierCurve(cp_list, 200, points_on_curve)
     let curve_material = new THREE.LineBasicMaterial({color: "red"});
     let curve = new THREE.Line(curve_geometry, curve_material);
-    //scene.add(curve);
+    scene.add(curve);
 
     //place spheres at each point control point  
     for (let i = 0; i < cp_list.length; i++){
@@ -798,7 +819,7 @@ function play_animation_jet(jet, cp_list, finished_callback){
         let sphere_material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
         let sphere = new THREE.Mesh( sphere_geometry, sphere_material );
         sphere.position.set(point[0], point[1], point[2])
-        //scene.add( sphere );
+        scene.add( sphere );
     }
 
 
