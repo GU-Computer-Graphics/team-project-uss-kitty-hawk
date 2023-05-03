@@ -731,8 +731,9 @@ var jet_flight3_cp_list = [
 
 var jet_trick1_cp_list = [
     [200, 120, 0],
-    [0, 200, -400],
     [400, 640, 400],
+
+    [0, 200, -400],
     [200, 120, 0],
 ]
 
@@ -746,21 +747,24 @@ let jet_stop_animation = {
 
 let jet_flight_animation = {
     cp_list: [jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list],
-    next_anim_list: null,
+    next_anim_list: [null, jet_trick1_animation],
     weight: 1,
 }
-
-let jet_take_off_animation = {
-    cp_list: [jet_takeoff_cp_list],
-    next_anim_list: [jet_flight_animation],
-    weight: 1,
-}
-
-let jet_trick1_animation = {
+var jet_trick1_animation = {
     cp_list: [jet_trick1_cp_list],
     next_anim_list: [jet_flight_animation],
     weight: 1,
 }
+
+jet_flight_animation.next_anim_list[1] = jet_trick1_animation
+
+
+let jet_take_off_animation = {
+    cp_list: [jet_takeoff_cp_list],
+    next_anim_list: [jet_flight_animation, jet_trick1_animation],
+    weight: 1,
+}
+
 
 let debug_animation = {
     cp_list: [jet_takeoff_cp_list],
@@ -778,9 +782,10 @@ function play_complex_animation_jet(jet, initial_anim_obj){
     if(next_anim_list != null){
         //get random next animation
         let index = Math.floor(Math.random() * next_anim_list.length)
-        console.log(index)
         next_animation = next_anim_list[index]
     }
+
+    console.log(next_animation)
 
 
 
