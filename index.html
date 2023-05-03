@@ -92,18 +92,9 @@
 <body>
 
     <h1>Aircraft Carrier Demo</h1>
-    <!--<p>
-      controls:
-    </p>
     <p>
-        "t" to have the jet takeoff
+      controls: "t" to have the jet takeoff, "l" to land, "f" to have the camera map to following the jet in air which is currently <span id="ftext">false</span>
     </p>
-    <p>
-        "l" to land
-    </p>
-    <p>
-      "f" to have the camera map to following the jet in air.
-  </p> -->
 
     <script>
 
@@ -215,7 +206,7 @@ void main(){
         var scene = new THREE.Scene();
 
 
-        var water_box_geom = new THREE.PlaneGeometry(1300, 1300, 100, 100);
+        var water_box_geom = new THREE.PlaneGeometry(1300, 1300, 50, 50);
 
         var water_box_mat = new THREE.ShaderMaterial({
         uniforms: {
@@ -243,7 +234,7 @@ void main(){
         });
         water_box_mat.uniforms.time.value = 0.0;
 
-
+        
         var water_box = new THREE.Mesh(water_box_geom, water_box_mat);
         water_box.position.set(0, 0, 0);
         water_box.rotation.x = Math.PI / 2;
@@ -269,7 +260,7 @@ void main(){
             // console.log("key pressed was " + key);
             switch (key) {
                 case "f":
-                    updateCam(jet1)
+                    document.getElementById("ftext").textContent = updateCam(jet1)
                     break;
                 case "t":
                 play_animation_list_jet(jet1, animation_list_jet1, animation_list_jet1_no_takeoff)
@@ -296,16 +287,7 @@ void main(){
 
 
         // load aircraft carrier object into the scene
-         let loader = new THREE.GLTFLoader();
-         loader.crossOrigin = true;
-         loader.load( 'cv-assets/USS_Kitty_Hawk.glb', function(data) {
-             let cv = data.scene;
-             cv.position.set(0, -6, -0.75);
-             cv.rotation.y = Math.PI / -2;
-             cv.scale.set(15.5, 15.5, 15.5);
-             scene.add(cv);
-         });
-
+         
 
 
         //5. Create a renderer to render the scene

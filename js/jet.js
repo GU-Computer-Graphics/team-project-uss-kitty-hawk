@@ -740,6 +740,7 @@ var jet_flight3_cp_list = [
 var cameraFollowJet = false;
 function updateCam(jet) {
     cameraFollowJet = !cameraFollowJet
+    return cameraFollowJet
 }
 
 function play_animation_jet(jet, cp_list, finished_callback){
