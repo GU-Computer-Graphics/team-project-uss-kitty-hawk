@@ -11,8 +11,8 @@
         canvas {
             display: block;
             margin: 10px auto;
-            width: 1920px;
-            height: 1080px;
+            width: 1180px;
+            height: 580px;
         }
 
         h1 {
@@ -206,7 +206,7 @@ void main(){
         var scene = new THREE.Scene();
 
 
-        var water_box_geom = new THREE.PlaneGeometry(1300, 1300, 50, 50);
+        var water_box_geom = new THREE.PlaneGeometry(1300, 1300, 100, 100);
 
         var water_box_mat = new THREE.ShaderMaterial({
         uniforms: {
@@ -247,9 +247,63 @@ void main(){
 
 
         let jet1 = createJet();
-        jet1.position.set(0, 10, 0);
+        jet1.position.set(-150, 36, 0);
         jet1.scale.set(0.2, 0.2, 0.2);
         scene.add(jet1);
+
+        let jet2 = createJet();
+        jet2.position.set(-30, 36, 40);
+        jet2.scale.set(0.2, 0.2, 0.2);
+        jet2.rotateY(-THREE.Math.degToRad(-90));
+        scene.add(jet2);
+
+        let jet3 = createJet();
+        jet3.position.set(0, 36, 40);
+        jet3.scale.set(0.2, 0.2, 0.2);
+        jet3.rotateY(-THREE.Math.degToRad(-90));
+        scene.add(jet3);
+
+        let jet4 = createJet();
+        jet4.position.set(30, 36, 40);
+        jet4.scale.set(0.2, 0.2, 0.2);
+        jet4.rotateY(-THREE.Math.degToRad(-90));
+        scene.add(jet4);
+
+        let jet5 = createJet();
+        jet5.position.set(-30, 36, 5);
+        jet5.scale.set(0.2, 0.2, 0.2);
+        jet5.rotateY(-THREE.Math.degToRad(-125));
+        scene.add(jet5);
+
+        let jet6 = createJet();
+        jet6.position.set(0, 36, 5);
+        jet6.scale.set(0.2, 0.2, 0.2);
+        jet6.rotateY(-THREE.Math.degToRad(-125));
+        scene.add(jet6);
+
+        let jet7 = createJet();
+        jet7.position.set(30, 36, 5);
+        jet7.scale.set(0.2, 0.2, 0.2);
+        jet7.rotateY(-THREE.Math.degToRad(-125));
+        scene.add(jet7);
+
+        let jet8 = createJet();
+        jet8.position.set(70, 36, -5);
+        jet8.scale.set(0.2, 0.2, 0.2);
+        jet8.rotateY(-THREE.Math.degToRad(125));
+        scene.add(jet8);
+
+        let jet9 = createJet();
+        jet9.position.set(100, 36, -5);
+        jet9.scale.set(0.2, 0.2, 0.2);
+        jet9.rotateY(-THREE.Math.degToRad(125));
+        scene.add(jet9);
+
+        let jet10 = createJet();
+        jet10.position.set(130, 36, -5);
+        jet10.scale.set(0.2, 0.2, 0.2);
+        jet10.rotateY(-THREE.Math.degToRad(125));
+        scene.add(jet10);
 
         let animation_list_jet1 = [jet_takeoff_cp_list, jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list]
         let animation_list_jet1_no_takeoff = [jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list]
@@ -287,7 +341,15 @@ void main(){
 
 
         // load aircraft carrier object into the scene
-         
+        let loader = new THREE.GLTFLoader();
+         loader.crossOrigin = true;
+         loader.load( 'cv-assets/USS_Kitty_Hawk.glb', function(data) {
+             let cv = data.scene;
+             cv.position.set(0, -6, -0.75);
+             cv.rotation.y = Math.PI / -2;
+             cv.scale.set(15.5, 15.5, 15.5);
+             scene.add(cv);
+         });
 
 
         //5. Create a renderer to render the scene

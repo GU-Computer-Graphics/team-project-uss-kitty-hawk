@@ -49,7 +49,16 @@ var jetMeshMaterials = [
         shininess: 1,
         flatShading: THREE.FlatShading,
     }),
-
+    new THREE.MeshPhongMaterial({
+        color: new THREE.Color("darkred"),
+        specular: new THREE.Color("white"),
+        shininess: 10,
+        flatShading: THREE.FlatShading,
+        emissive: new THREE.Color("red"),
+        emissiveIntensity: 0.6,
+        opacity: 0.5,
+        transparent: true,
+    }),
 ]
 
 var wingSize = {
@@ -602,6 +611,14 @@ function createJetObject(i) {
     TailBLMesh.rotateX(THREE.Math.degToRad(180));
     TailBLMesh.rotateY(THREE.Math.degToRad(10));
 
+    var TailLightGeom = new THREE.BoxGeometry(5,1, 2)
+    var TailLightMesh = new THREE.Mesh(TailLightGeom, jetMeshMaterials[7]);
+
+    jet.add(TailLightMesh);
+    TailLightMesh.position.set(-35, 20, 14)
+    TailLightMesh.rotateX(THREE.Math.degToRad(105));
+    //TailLightMesh.rotateY(THREE.Math.degToRad(10));
+
     var TailTRGeom = createtailfin(); 
 
     let TailTRMesh = new THREE.Mesh(TailTRGeom, jetMeshMaterials[i]);
@@ -910,4 +927,56 @@ function play_jet_takeoff_animation(jet){
 
 
 
+}
+
+var light1 = null
+function addLightToJet(jet) {
+    light1 = new THREE.SpotLight(
+        new THREE.Color("red"), //color
+        0.4, //intensity
+        1, //distance - is infinite
+        THREE.Math.degToRad(180), //angle
+        .5, //penumbra
+        0, //decay
+    );
+
+    light1.position.set(-35, 20, 16);
+
+    light1.name = "light"
+
+    let target = new THREE.Object3D();
+    target.position.set(-40, 20, 100);
+    light1.target = target;
+
+    jet.add(light1);
+    jet.add(target);
+}
+
+function animateLight() {
+    light1.intensity = .3
+    render();
+    setTimeout(() => { console.log("adjusting light"); }, 1000);
+    light1.intensity = .2
+    render();
+    setTimeout(() => { console.log("adjusting light"); }, 1000);
+    light1.intensity = .1
+    render();
+    setTimeout(() => { console.log("adjusting light"); }, 1000);
+    light1.intensity = 0
+    render();
+    setTimeout(() => { console.log("adjusting light"); }, 1000);
+    light1.intensity = .1
+    render();
+    setTimeout(() => { console.log("adjusting light"); }, 1000);
+    light1.intensity = .2
+    render();
+    setTimeout(() => { console.log("adjusting light"); }, 1000);
+    light1.intensity = .3
+    render();
+    setTimeout(() => { console.log("adjusting light"); }, 1000);
+    light1.intensity = .4
+    render();
+    setTimeout(() => { console.log("adjusting light"); }, 1000);
+    animationId = requestAnimationFrame(animateLight);
+    
 }
