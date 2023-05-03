@@ -931,16 +931,9 @@ function play_jet_takeoff_animation(jet){
 
 var light1 = null
 function addLightToJet(jet) {
-    light1 = new THREE.SpotLight(
-        new THREE.Color("red"), //color
-        0.4, //intensity
-        1, //distance - is infinite
-        THREE.Math.degToRad(180), //angle
-        .5, //penumbra
-        0, //decay
-    );
+    light1 = new THREE.PointLight("red", 10.1, 100);
 
-    light1.position.set(-35, 20, 16);
+    light1.position.set(0, 20, 0);
 
     light1.name = "light"
 
