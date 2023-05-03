@@ -197,7 +197,7 @@ void main(){
             min_blue: 0.0,
             min_green: 0.0,
             min_red: 0.0,
-            height_offset: 0.33
+            height_offset: 0.53
 
         };
 
@@ -353,7 +353,9 @@ void main(){
 
 
         //5. Create a renderer to render the scene
-        var renderer = new THREE.WebGLRenderer();
+        var renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
 
 
         var canvas = renderer.domElement;
