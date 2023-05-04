@@ -319,8 +319,10 @@ void main(){
                 play_jet_retract_gear(jet1)
                     break;
                 case "l":
-                  if(allow_flag_change)
+                  if(allow_flag_change){
+                    alert("Jet will land on next cycle")
                     land_jet_flag = true;
+                  }
                   
                   break;
                 default:
