@@ -823,6 +823,7 @@ let debug_animation = {
 
 var land_jet_flag = false
 var allow_flag_change = true
+var takeoff_allow_flag = true
 function play_complex_animation_jet(jet, initial_anim_obj){
     let anim_list = initial_anim_obj.cp_list
     let next_anim_list = initial_anim_obj.next_anim_list

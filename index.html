@@ -315,13 +315,18 @@ void main(){
                     document.getElementById("ftext").textContent = updateCam(jet1)
                     break;
                 case "t":
-                play_complex_animation_jet(jet1, jet_take_off_animation)
-                play_jet_retract_gear(jet1)
+                  if(takeoff_allow_flag){
+                    play_complex_animation_jet(jet1, jet_take_off_animation)
+                    play_jet_retract_gear(jet1)
+                    takeoff_allow_flag = false;
+                  }
+                  
                     break;
                 case "l":
                   if(allow_flag_change){
-                    alert("Jet will land on next cycle")
+                    alert("Jet will land on next cycle\nDO NO CLICK TAKEOFF UNTIL JET HAS LANDED")
                     land_jet_flag = true;
+                    takeoff_allow_flag = true;
                   }
                   
                   break;
