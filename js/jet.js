@@ -929,11 +929,10 @@ function play_jet_takeoff_animation(jet){
 
 }
 
-var light1 = null
+var light1 = new THREE.PointLight("red", 10.1, 100)
 function addLightToJet(jet) {
-    light1 = new THREE.PointLight("red", 10.1, 100);
 
-    light1.position.set(0, 20, 0);
+    light1.position.set(-35, 20, 15);
 
     light1.name = "light"
 
@@ -945,31 +944,45 @@ function addLightToJet(jet) {
     jet.add(target);
 }
 
+
 function animateLight() {
-    light1.intensity = .3
-    render();
-    setTimeout(() => { console.log("adjusting light"); }, 1000);
-    light1.intensity = .2
-    render();
-    setTimeout(() => { console.log("adjusting light"); }, 1000);
-    light1.intensity = .1
-    render();
-    setTimeout(() => { console.log("adjusting light"); }, 1000);
-    light1.intensity = 0
-    render();
-    setTimeout(() => { console.log("adjusting light"); }, 1000);
-    light1.intensity = .1
-    render();
-    setTimeout(() => { console.log("adjusting light"); }, 1000);
-    light1.intensity = .2
-    render();
-    setTimeout(() => { console.log("adjusting light"); }, 1000);
-    light1.intensity = .3
-    render();
-    setTimeout(() => { console.log("adjusting light"); }, 1000);
-    light1.intensity = .4
-    render();
-    setTimeout(() => { console.log("adjusting light"); }, 1000);
-    animationId = requestAnimationFrame(animateLight);
+    let time_step = 0;
+    let animation_speed = 50
+    let max_animation_speed = 50
+    let animation_speed_decrement = 4
+    lightTracker = 0
+    function anim(){
+        
+
+        if(lightTracker < 20) {
+            light1.intensity -= .5
+            lightTracker++
+        }
+
+        else {
+            light1.intensity += .5
+            lightTracker++
+            if(lightTracker > 39) {
+                lightTracker = 0
+            }
+        }
+
+        time_step += 1
+        
+        animation_speed -= animation_speed_decrement
+        if (animation_speed < max_animation_speed){
+            animation_speed = max_animation_speed
+        }
+        clearInterval(animation_interval)
+        animation_interval = setInterval(anim, animation_speed)
+        console.log(animation_speed)
+
+        render();
+
+
+    }
+
+    let animation_interval = setInterval(anim, animation_speed)
+
     
 }
