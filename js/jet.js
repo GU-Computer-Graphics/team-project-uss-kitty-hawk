@@ -893,7 +893,7 @@ function play_animation_jet(jet, cp_list, finished_callback){
     let curve_geometry = createBezierCurve(cp_list, 200, points_on_curve)
     let curve_material = new THREE.LineBasicMaterial({color: "red"});
     let curve = new THREE.Line(curve_geometry, curve_material);
-    scene.add(curve);
+    //scene.add(curve);
 
     //place spheres at each point control point  
     for (let i = 0; i < cp_list.length; i++){
@@ -902,7 +902,7 @@ function play_animation_jet(jet, cp_list, finished_callback){
         let sphere_material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
         let sphere = new THREE.Mesh( sphere_geometry, sphere_material );
         sphere.position.set(point[0], point[1], point[2])
-        scene.add( sphere );
+        //scene.add( sphere );
     }
 
 
