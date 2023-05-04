@@ -701,6 +701,13 @@ var jet_takeoff_cp_list = [
     [200, 120, 0],
 ]
 
+var jet_landing_cp_list = [
+    [200, 120, 0],
+    [100, 120, 0],
+    [100, 70, 0],
+    [-150, 40, 0],
+]
+
 var jet_flight1_cp_list = [
 
 
@@ -736,18 +743,32 @@ var jet_trick1_cp_list = [
     [0, 200, -400],
     [200, 120, 0],
 ]
+//position of the jet at the end of the animation
+var jet_end_cp_list = [
+    [-150, 40, 0],
+    [-150, 40, 0],
+    [-150, 40, 0],
+    [-150, 40, 0],
+
+]
+
 
 
 
 let jet_stop_animation = {
-    cp_list: [],
+    cp_list: [jet_end_cp_list],
     next_anim_list: null,
+    weight: 1,
+}
+var jet_landing_animation = {
+    cp_list: [jet_landing_cp_list],
+    next_anim_list: [jet_stop_animation],
     weight: 1,
 }
 
 let jet_flight_animation = {
     cp_list: [jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list],
-    next_anim_list: [null, jet_trick1_animation],
+    next_anim_list: [null, jet_trick1_animation, jet_landing_animation],
     weight: 1,
 }
 var jet_trick1_animation = {
@@ -755,6 +776,8 @@ var jet_trick1_animation = {
     next_anim_list: [jet_flight_animation],
     weight: 1,
 }
+
+
 
 jet_flight_animation.next_anim_list[1] = jet_trick1_animation
 
@@ -779,6 +802,14 @@ function play_complex_animation_jet(jet, initial_anim_obj){
     let weight = initial_anim_obj.weight
 
     let next_animation = null
+
+    if(initial_anim_obj == jet_stop_animation){
+        //set jets position and rotation to end of animation
+        jet.position.set(jet_end_cp_list[0][0], jet_end_cp_list[0][1], jet_end_cp_list[0][2])
+        jet.rotation.set(0, 0, 0)
+        return
+    }
+
     if(next_anim_list != null){
         //get random next animation
         let index = Math.floor(Math.random() * next_anim_list.length)
