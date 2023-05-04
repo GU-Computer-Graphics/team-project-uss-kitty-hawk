@@ -318,6 +318,11 @@ void main(){
                 play_complex_animation_jet(jet1, jet_take_off_animation)
                 play_jet_retract_gear(jet1)
                     break;
+                case "l":
+                  if(allow_flag_change)
+                    land_jet_flag = true;
+                  
+                  break;
                 default:
                     break;
             }

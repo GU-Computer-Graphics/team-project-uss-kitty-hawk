@@ -821,12 +821,15 @@ let debug_animation = {
 }
 
 
+var land_jet_flag = false
+var allow_flag_change = true
 function play_complex_animation_jet(jet, initial_anim_obj){
     let anim_list = initial_anim_obj.cp_list
     let next_anim_list = initial_anim_obj.next_anim_list
     let weight = initial_anim_obj.weight
 
     let next_animation = null
+
 
     if(initial_anim_obj == jet_stop_animation){
         //set jets position and rotation to end of animation
@@ -840,6 +843,18 @@ function play_complex_animation_jet(jet, initial_anim_obj){
         let index = Math.floor(Math.random() * next_anim_list.length)
         next_animation = next_anim_list[index]
     }
+
+    if(land_jet_flag){
+        next_animation = jet_landing_animation
+        land_jet_flag = false
+    }
+
+    if(next_animation == jet_landing_animation){
+        allow_flag_change = false
+    }else{
+        allow_flag_change = true
+    }
+
 
     console.log(next_animation)
 
