@@ -308,8 +308,6 @@ void main(){
         jet10.rotateY(-THREE.Math.degToRad(125));
         scene.add(jet10);
 
-        let animation_list_jet1 = [jet_takeoff_cp_list, jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list]
-        let animation_list_jet1_no_takeoff = [jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list]
 
         var cameraFollowJet = false;
         document.addEventListener("keypress", (event) => {
@@ -320,9 +318,17 @@ void main(){
                     document.getElementById("ftext").textContent = updateCam(jet1)
                     break;
                 case "t":
-                play_animation_list_jet(jet1, animation_list_jet1, animation_list_jet1_no_takeoff)
-                play_jet_retract_gear(jet1)
-                    break;
+                  play_complex_animation_jet(jet1, jet_take_off_animation)
+
+                  play_jet_retract_gear(jet1)
+                  break;
+                case "l":
+                  if(allow_flag_change){
+                    alert("Jet will land on next cycle")
+                    land_jet_flag = true;
+                  }
+                  
+                  break;
                 default:
                     break;
             }
