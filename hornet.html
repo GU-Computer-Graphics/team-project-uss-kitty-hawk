@@ -102,15 +102,10 @@
 
         //2. Create jet using global object variable
         var jet1 = createJet()
-        var jet2 = createJet()
 
         scene.add(jet1)
-        scene.add(jet2)
 
-        jet1.position.set(0,40,0)
-        jet1.scale.set(.5,.5,.5)
-        jet1.rotateX(THREE.Math.degToRad(180))
-        jet2.position.set(0,0,0)
+        addLightToJet(jet1)
 
         //5. Create a renderer to render the scene
         var renderer = new THREE.WebGLRenderer();
@@ -135,10 +130,11 @@
         //set up camera controls so we can use mouse to pan around scene
         setupCameraControls();
 
-        var ambLight = new THREE.AmbientLight(new THREE.Color("white"), 1);
+        var ambLight = new THREE.AmbientLight(new THREE.Color("white"), .2);
         scene.add(ambLight);
 
         scene.add(ah);
+        animateLight()
 
         render();
 

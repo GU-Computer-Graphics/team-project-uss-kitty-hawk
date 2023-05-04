@@ -91,7 +91,7 @@
 
 <body>
 
-    <h1>Aircraft Carrier At Sea(Day)</h1>
+    <h1>Aircraft Carrier At Sea(Night)</h1>
     <p>
       controls: "t" to have the jet takeoff, "l" to land, "f" to have the camera map to following the jet in air which is currently <span id="ftext">false</span>
     </p>
@@ -197,7 +197,7 @@ void main(){
             min_blue: 0.0,
             min_green: 0.0,
             min_red: 0.0,
-            height_offset: 0.33
+            height_offset: 0.53
 
         };
 
@@ -250,6 +250,9 @@ void main(){
         jet1.position.set(-150, 36, 0);
         jet1.scale.set(0.2, 0.2, 0.2);
         scene.add(jet1);
+        addLightToJet(jet1);
+        animateLight();
+
 
         let jet2 = createJet();
         jet2.position.set(-30, 36, 40);
@@ -305,6 +308,8 @@ void main(){
         jet10.rotateY(-THREE.Math.degToRad(125));
         scene.add(jet10);
 
+        let animation_list_jet1 = [jet_takeoff_cp_list, jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list]
+        let animation_list_jet1_no_takeoff = [jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list]
 
         var cameraFollowJet = false;
         document.addEventListener("keypress", (event) => {
@@ -315,7 +320,7 @@ void main(){
                     document.getElementById("ftext").textContent = updateCam(jet1)
                     break;
                 case "t":
-                play_complex_animation_jet(jet1, jet_take_off_animation)
+                play_animation_list_jet(jet1, animation_list_jet1, animation_list_jet1_no_takeoff)
                 play_jet_retract_gear(jet1)
                     break;
                 default:
@@ -351,7 +356,9 @@ void main(){
 
 
         //5. Create a renderer to render the scene
-        var renderer = new THREE.WebGLRenderer();
+        var renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
 
 
         var canvas = renderer.domElement;
@@ -398,20 +405,16 @@ void main(){
 
 
       //setup skybox
-      const sky_top = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Top.bmp');
-      const sky_bottom = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Bottom.bmp');
-      const sky_front = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Front.bmp');
-      const sky_back = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Back.bmp');
-      const sky_left = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Left.bmp');
-      const sky_right = new THREE.TextureLoader().load('./skybox_day/Daylight Box_Right.bmp');
+      const sky = new THREE.TextureLoader().load('./skybox_night/SKYBOXNIGHT.jpeg');
+      
       //create material array
       const skybox_materials = [];
-      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_right, side: THREE.BackSide}));
-      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_left, side: THREE.BackSide}));
-      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_top, side: THREE.BackSide}));
-      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_bottom, side: THREE.BackSide}));
-      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_front, side: THREE.BackSide}));
-      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky_back, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky, side: THREE.BackSide}));
+      skybox_materials.push(new THREE.MeshBasicMaterial({map: sky, side: THREE.BackSide}));
 
 
 

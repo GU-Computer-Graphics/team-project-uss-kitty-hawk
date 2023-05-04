@@ -43,7 +43,22 @@ var jetMeshMaterials = [
         flatShading: THREE.FlatShading,
         side: THREE.DoubleSide
     }),
-
+    new THREE.MeshPhongMaterial({
+        color: new THREE.Color("black"),
+        specular: new THREE.Color("blue"),
+        shininess: 1,
+        flatShading: THREE.FlatShading,
+    }),
+    new THREE.MeshPhongMaterial({
+        color: new THREE.Color("darkred"),
+        specular: new THREE.Color("white"),
+        shininess: 10,
+        flatShading: THREE.FlatShading,
+        emissive: new THREE.Color("red"),
+        emissiveIntensity: 0.6,
+        opacity: 0.5,
+        transparent: true,
+    }),
 ]
 
 var wingSize = {
@@ -249,6 +264,7 @@ function createNose(i) {
     var NoseColomn = new THREE.Object3D();
     var shaftGeom = new THREE.CylinderGeometry(5, 5, 70, 20);
     var shaftMesh = new THREE.Mesh(shaftGeom, jetMeshMaterials[i]);
+    NoseColomn.name = `nose${i}`
 
     var curve = new THREE.EllipseCurve(
         0,  0,            // ax, aY
@@ -284,7 +300,8 @@ function createNose(i) {
 
     points = curve.getPoints( 50 );
     var glassGeom = new THREE.LatheGeometry( points );
-    var glassMesh = new THREE.Mesh(glassGeom, jetMeshMaterials[0]);
+    var glassMesh = new THREE.Mesh(glassGeom, jetMeshMaterials[6]);
+    glassMesh.name = `glass${i}`
 
 
     NoseColomn.add(shaftMesh)
@@ -594,6 +611,14 @@ function createJetObject(i) {
     TailBLMesh.rotateX(THREE.Math.degToRad(180));
     TailBLMesh.rotateY(THREE.Math.degToRad(10));
 
+    var TailLightGeom = new THREE.BoxGeometry(5,1, 2)
+    var TailLightMesh = new THREE.Mesh(TailLightGeom, jetMeshMaterials[7]);
+
+    jet.add(TailLightMesh);
+    TailLightMesh.position.set(-35, 20, 14)
+    TailLightMesh.rotateX(THREE.Math.degToRad(105));
+    //TailLightMesh.rotateY(THREE.Math.degToRad(10));
+
     var TailTRGeom = createtailfin(); 
 
     let TailTRMesh = new THREE.Mesh(TailTRGeom, jetMeshMaterials[i]);
@@ -836,6 +861,12 @@ function play_complex_animation_jet(jet, initial_anim_obj){
 }
 
     
+var cameraFollowJet = false;
+function updateCam(jet) {
+    cameraFollowJet = !cameraFollowJet
+    return cameraFollowJet
+}
+
 
 function play_animation_jet(jet, cp_list, finished_callback){
     let points_on_curve = []
@@ -876,6 +907,12 @@ function play_animation_jet(jet, cp_list, finished_callback){
             animation_speed -= animation_speed_decrement
             if (animation_speed < max_animation_speed){
                 animation_speed = max_animation_speed
+            }
+            if(cameraFollowJet) {
+                cameraParams.eyeX = point.x
+                cameraParams.eyeY = point.y + 3
+                cameraParams.eyeZ = point.z 
+                redoCamera()
             }
             clearInterval(animation_interval)
             animation_interval = setInterval(anim, animation_speed)
@@ -1000,4 +1037,62 @@ function play_jet_takeoff_animation(jet){
 
 
 
+}
+
+var light1 = new THREE.PointLight("red", 10.1, 100)
+function addLightToJet(jet) {
+
+    light1.position.set(-35, 20, 15);
+
+    light1.name = "light"
+
+    let target = new THREE.Object3D();
+    target.position.set(-40, 20, 100);
+    light1.target = target;
+
+    jet.add(light1);
+    jet.add(target);
+}
+
+
+function animateLight() {
+    let time_step = 0;
+    let animation_speed = 50
+    let max_animation_speed = 50
+    let animation_speed_decrement = 4
+    lightTracker = 0
+    function anim(){
+        
+
+        if(lightTracker < 20) {
+            light1.intensity -= .5
+            lightTracker++
+        }
+
+        else {
+            light1.intensity += .5
+            lightTracker++
+            if(lightTracker > 39) {
+                lightTracker = 0
+            }
+        }
+
+        time_step += 1
+        
+        animation_speed -= animation_speed_decrement
+        if (animation_speed < max_animation_speed){
+            animation_speed = max_animation_speed
+        }
+        clearInterval(animation_interval)
+        animation_interval = setInterval(anim, animation_speed)
+        console.log(animation_speed)
+
+        render();
+
+
+    }
+
+    let animation_interval = setInterval(anim, animation_speed)
+
+    
 }
