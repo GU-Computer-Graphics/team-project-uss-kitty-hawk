@@ -793,7 +793,7 @@ var jet_landing_animation = {
 
 let jet_flight_animation = {
     cp_list: [jet_flight1_cp_list, jet_flight2_cp_list, jet_flight3_cp_list],
-    next_anim_list: [null, jet_trick1_animation, jet_landing_animation],
+    next_anim_list: [null, jet_trick1_animation],
     weight: 1,
 }
 var jet_trick1_animation = {
