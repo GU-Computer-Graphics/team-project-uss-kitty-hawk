@@ -347,6 +347,39 @@ void main(){
         scene.add(hemiLight);
         scene.add(helper);
 
+        //spotlights
+        let light3 = new THREE.SpotLight(0xFFFFFF, 80, 100, Math.PI - 9);
+        light3.position.set(-80, 75, 38);
+
+        let light4 = new THREE.SpotLight(0xFFFFFF, 10, 100, Math.PI - 9);
+        light4.position.set(-115, 60, 38);
+
+        //targets
+        let tg1 = new THREE.Object3D();
+        tg1.position.set(100, -20, -40);
+        light3.target = tg1;
+
+        let tg2 = new THREE.Object3D();
+        tg2.position.set(-100, -7, -100);
+        light4.target = tg2;
+
+        scene.add(tg1, light3, tg2, light4);
+
+        //runway lights
+        let rw1 = new THREE.PointLight( 0xffff00, 1, 100 );
+        rw1.position.set(-120, 38, -5);
+        let rw2 = new THREE.PointLight( 0xffff00, 1, 100 );
+        rw2.position.set(-150, 38, 2);
+        let rw3 = new THREE.PointLight( 0xffff00, 1, 100 );
+        rw3.position.set(-180, 38, 9);
+        let rw4 = new THREE.PointLight( 0xffff00, 1, 100 );
+        rw4.position.set(-210, 38, 16);
+        let rw5 = new THREE.PointLight( 0xffff00, 1, 100 );
+        rw5.position.set(-90, 38, -12);
+        let rw6 = new THREE.PointLight( 0xffff00, 1, 100 );
+        rw6.position.set(-60, 38, -19);
+        scene.add(rw1, rw2, rw3, rw4, rw5, rw6);
+
 
 
         // load aircraft carrier object into the scene
