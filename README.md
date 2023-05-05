@@ -15,6 +15,11 @@ https://gu-computer-graphics.github.io/team-project-uss-kitty-hawk/nightscene.ht
 <li>Carrier Lighting</li>
 <li>Aircraft Camera</li>
 
+<h3>Outside Sources Used</h3>
+<ul>
+<li>https://medium.com/@matthewmain/how-to-import-a-3d-blender-object-into-a-three-js-project-as-a-gltf-file-5a67290f65f2</li>
+</ul>
+
 
 
 </ol>
