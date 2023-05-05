@@ -2,7 +2,9 @@
 
 <h1>ReadME</h1>
 
-<h2>Github Pages URL:</h2>
+<h2>Github Pages URL: 
+https://gu-computer-graphics.github.io/team-project-uss-kitty-hawk/
+https://gu-computer-graphics.github.io/team-project-uss-kitty-hawk/nightscene.html</h2>
 
 <p>A detailed aircraft carrier during the daytime with a fleet of F-18 fighter jets taking off its runway and flying around the scene in circles. This takes place in the ocean using a box geometry with a custom water shader to create the water movement. Two scenes exist, one being set during the day, and the other at night.</p>
 <ol>
